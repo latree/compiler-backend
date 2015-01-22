@@ -67,12 +67,31 @@ public class IR1Interp {
   //code needed..........
   //per function level environment
   static class funcEnv{
-    HashMap<String,Integer> labelMap;  // label table
-    HashMap<Integer,Val> tempMap;      // temp table
-    HashMap<String,Val> varMap;        // var table
+    HashMap<String,Integer> labelMap;  
+    HashMap<Integer,Val> tempMap;
+    HashMap<String,Val> varMap;
     
-    
+    funcEnv(HashMap<String,Integer> labelMap, 
+            HashMap<Integer,Val> tempMap,
+            HashMap<String,Val> varMap       ){
+      this.labelMap = labelMap;
+      this.tempMap = tempMap;
+      this.varMap = varMap;
+    }
+    funcEnv(){
+      this.labelMap = new HashMap<String, Integer>();
+      this.tempMap = new HashMap<Integer, Val>();
+      this.varMap = new HashMap<String,Val>();
+    }
+
+    public void rmAll(){
+      this.labelMap.clear();
+      this.tempMap.clear();
+      this.varMap.clear();
+    }
   }
+  static funcEnv env = new funcEnv();
+  static Stack<funcEnv> funcStack = new Stack<funcEnv>(); 
 
 
   //-----------------------------------------------------------------
@@ -142,8 +161,8 @@ public class IR1Interp {
   //
   public static void execute(IR1.Program n) throws Exception { 
     funcMap = new HashMap<String,IR1.Func>();
-    storage = new ArrayList<Val>();
-    retVal = Val.Undefined;
+    //storage = new ArrayList<Val>();
+    //retVal = Val.Undefined;
     for (IR1.Func f: n.funcs)
       funcMap.put(f.name, f);
     execute(funcMap.get("main"));
@@ -160,9 +179,22 @@ public class IR1Interp {
   // 2. Execute the fetch-and-execute loop.
   //
   static void execute(IR1.Func n) throws Exception { 
+    // .....code needed
+    funcStack.push(env);
+    for (int i =0; i<n.code.length;++i){
+      if (n.code[i] instanceof IR1.LabelDec)
+	funcStack.peek().labelMap.put(((IR1.LabelDec)n.code[i]).name, i);
+    }
+/*
+    for (String p: n.params){
+      varMap.put(p, );
+    }
+    varMap.put();
+*/
 
-    // ... code needed ...
+    
 
+    
     // The fetch-and-execute loop
     int idx = 0;
     while (idx < n.code.length) {
@@ -191,7 +223,7 @@ public class IR1Interp {
     if (n instanceof IR1.LabelDec) return CONTINUE;
     throw new IntException("Unknown Inst: " + n);
   }
-
+/*
   //-----------------------------------------------------------------
   // Execution routines for individual Inst nodes
   //-----------------------------------------------------------------
@@ -281,16 +313,20 @@ public class IR1Interp {
     // ... code needed ...
 
   }	
-
+*/
   // Call ---
   //  String name;
   //  Src[] args;
   //  Dest rdst;
   //
   static int execute(IR1.Call n) throws Exception {
-
     // ... code needed ...
-
+    if(n.name.equals("printStr")){
+      for (IR1.Src s : n.args){
+	System.out.print(evaluate(s));
+      }
+    }
+    return CONTINUE;
   }
 
   // Return ---  
@@ -299,10 +335,12 @@ public class IR1Interp {
   static int execute(IR1.Return n) throws Exception {
 
     // ... code needed ...
+    if (n.val == null)
+      funcStack.pop();
 
     return RETURN;
   }
-
+/*
   //-----------------------------------------------------------------
   // Evaluatation routines for address
   //-----------------------------------------------------------------
@@ -318,7 +356,7 @@ public class IR1Interp {
     // ... code needed ...
 
   }
-
+*/
   //-----------------------------------------------------------------
   // Evaluatation routines for operands
   //-----------------------------------------------------------------
@@ -327,19 +365,20 @@ public class IR1Interp {
   //
   static Val evaluate(IR1.Src n) throws Exception {
     Val val;
-    // if (n instanceof IR1.Temp)    val = 
-    // if (n instanceof IR1.Id)      val = 
-    // if (n instanceof IR1.IntLit)  val = 
-    // if (n instanceof IR1.BoolLit) val = 
-    // if (n instanceof IR1.StrLit)  val = 
+      //if (n instanceof IR1.Temp)    val = funcStack.peek().tempMap.get(((IR1.Temp) n).num);
+      //if (n instanceof IR1.Id)      val = funcStack.peek().tempMap.get(((IR1.Id) n).name);
+      if (n instanceof IR1.IntLit)  val = new IntVal(((IR1.IntLit) n).i);
+      else if (n instanceof IR1.BoolLit) val = new BoolVal(((IR1.BoolLit) n).b);
+      else if (n instanceof IR1.StrLit)  val = new StrVal(((IR1.StrLit) n).s);
+      else val = new UndVal();
     return val;
   }
-
+/*
   static Val evaluate(IR1.Dest n) throws Exception {
     Val val;
     // if (n instanceof IR0.Temp) val = 
     // if (n instanceof IR0.Id)   val = 
     return val;
   }
-
+*/
 }
