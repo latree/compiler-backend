@@ -321,9 +321,14 @@ public class IR1Interp {
   //
   static int execute(IR1.Call n) throws Exception {
     // ... code needed ...
-    if(n.name.equals("printStr")){
-      for (IR1.Src s : n.args){
-	System.out.print(evaluate(s));
+    if (n.name.equals("printStr") 
+      || n.name.equals("printInt")
+      || n.name.equals("printBool")){
+      
+      if(n.args.length == 0)
+	System.out.println();
+      for (int i =0; i<n.args.length; ++i){
+	  System.out.println(evaluate((n.args)[i]));
       }
     }
     return CONTINUE;
