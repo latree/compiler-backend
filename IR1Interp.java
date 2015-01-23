@@ -179,21 +179,18 @@ public class IR1Interp {
   // 2. Execute the fetch-and-execute loop.
   //
   static void execute(IR1.Func n) throws Exception { 
-    // .....code needed
+    //push an empty env contains label,var,temp,maps to the top of stack
     funcStack.push(env);
+    //collect label decls
     for (int i =0; i<n.code.length;++i){
       if (n.code[i] instanceof IR1.LabelDec)
 	funcStack.peek().labelMap.put(((IR1.LabelDec)n.code[i]).name, i);
     }
-/*
-    for (String p: n.params){
-      varMap.put(p, );
+    //collect args decls
+    for (int j=0; j<n.params.length; ++j){
+      funcStack.peek().varMap.put(n.params[j] ,new UndVal());
     }
-    varMap.put();
-*/
-
     
-
     
     // The fetch-and-execute loop
     int idx = 0;
@@ -263,17 +260,19 @@ public class IR1Interp {
 
     return CONTINUE;  
   }
-
+*/
   // Move ---
   //  Dest dst;
   //  Src src;
   //
   static int execute(IR1.Move n) throws Exception {
-
-    // ... code needed ...
-
+    if (n.dst instanceof IR1.Id)
+      funcStack.peek().varMap.put(((IR1.Id) (n.dst)).name, evaluate(n.src));
+    else
+      funcStack.peek().tempMap.put(((IR1.Temp) (n.dst)).num, evaluate(n.src));
+    return CONTINUE;
   }
-
+/*
   // Load ---  
   //  Dest dst;
   //  Addr addr;
@@ -340,9 +339,9 @@ public class IR1Interp {
   static int execute(IR1.Return n) throws Exception {
 
     // ... code needed ...
-    if (n.val == null)
-      funcStack.pop();
-
+    env.rmAll();
+    funcStack.pop();
+    
     return RETURN;
   }
 /*
@@ -370,9 +369,9 @@ public class IR1Interp {
   //
   static Val evaluate(IR1.Src n) throws Exception {
     Val val;
-      //if (n instanceof IR1.Temp)    val = funcStack.peek().tempMap.get(((IR1.Temp) n).num);
-      //if (n instanceof IR1.Id)      val = funcStack.peek().tempMap.get(((IR1.Id) n).name);
-      if (n instanceof IR1.IntLit)  val = new IntVal(((IR1.IntLit) n).i);
+      if (n instanceof IR1.Temp)    val = funcStack.peek().tempMap.get(((IR1.Temp) n).num);
+      else if (n instanceof IR1.Id)      val = funcStack.peek().varMap.get(((IR1.Id) n).name);
+      else if (n instanceof IR1.IntLit)  val = new IntVal(((IR1.IntLit) n).i);
       else if (n instanceof IR1.BoolLit) val = new BoolVal(((IR1.BoolLit) n).b);
       else if (n instanceof IR1.StrLit)  val = new StrVal(((IR1.StrLit) n).s);
       else val = new UndVal();

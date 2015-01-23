@@ -1,8 +1,12 @@
 # IR1 Program
 
 _main ()
+(b, i, j)
 {
  call _printInt(123)
+ call _printInt(b)
+ call _printInt(i)
+ call _printInt(j)
  return 
 }
 
