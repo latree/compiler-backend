@@ -228,19 +228,61 @@ public class IR1Interp {
   // - Each execute() routine returns CONTINUE, RETURN, or a new idx 
   //   (target of jump).
   //
-
+*/
   // Binop ---
   //  BOP op;
   //  Dest dst;
   //  Src src1, src2;
   //
   static int execute(IR1.Binop n) throws Exception {
-
-    // ... code needed ...
-
+    Val val1 = evaluate(n.src1);
+    Val val2 = evaluate(n.src2);
+    Val res;
+    if (n.op == IR1.AOP.ADD){
+      res = new IntVal( ((IntVal) val1).i + ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.AOP.SUB){
+      res = new IntVal( ((IntVal) val1).i - ((IntVal) val2).i );    
+    }
+    else if (n.op == IR1.AOP.MUL){
+      res = new IntVal( ((IntVal) val1).i * ((IntVal) val2).i );   
+    }
+    else if (n.op == IR1.AOP.DIV){
+      res = new IntVal( ((IntVal) val1).i / ((IntVal) val2).i );    
+    }
+    else if (n.op == IR1.AOP.AND){
+      res = new BoolVal( ((BoolVal) val1).b && ((BoolVal) val2).b );
+    }
+    else if (n.op == IR1.AOP.OR){
+      res = new BoolVal( ((BoolVal) val1).b || ((BoolVal) val2).b );
+    }
+    else if (n.op == IR1.ROP.EQ){
+      res = new BoolVal( ((IntVal) val1).i == ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.NE){
+      res = new BoolVal( ((IntVal) val1).i != ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LT){
+      res = new BoolVal( ((IntVal) val1).i < ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LE){
+      res = new BoolVal( ((IntVal) val1).i <= ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GT){
+      res = new BoolVal( ((IntVal) val1).i > ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GE){
+      res = new BoolVal( ((IntVal) val1).i >= ((IntVal) val2).i );
+    }
+    else
+      res = new UndVal();
+    if (n.dst instanceof IR1.Id)
+      funcStack.peek().varMap.put( ((IR1.Id) n.dst).name, res );   
+    else if (n.dst instanceof IR1.Temp)
+      funcStack.peek().tempMap.put( ((IR1.Temp) n.dst).num, res );
     return CONTINUE;  
   }
-
+/*
   // Unop ---
   //  UOP op;
   //  Dest dst;

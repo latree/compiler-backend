@@ -1,12 +1,10 @@
 # IR1 Program
 
 _main ()
-(b, i, j)
+(i, b)
 {
- call _printInt(123)
- call _printInt(b)
- call _printInt(i)
- call _printInt(j)
+ t1=2*4
+ call _printInt(t1)
  return 
 }
 
