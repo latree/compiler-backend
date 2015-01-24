@@ -339,18 +339,43 @@ public class IR1Interp {
     // ... code needed ...
 
   }
-
+*/
   // CJump ---
   //  ROP op;
   //  Src src1, src2;
   //  Label lab;
   //
   static int execute(IR1.CJump n) throws Exception {
+    Val val1 = evaluate(n.src1);
+    Val val2 = evaluate(n.src2);
+    Val res;
+    if (n.op == IR1.ROP.EQ){
+      res = new BoolVal( ((IntVal) val1).i == ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.NE){
+      res = new BoolVal( ((IntVal) val1).i != ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LT){
+      res = new BoolVal( ((IntVal) val1).i < ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LE){
+      res = new BoolVal( ((IntVal) val1).i <= ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GT){
+      res = new BoolVal( ((IntVal) val1).i > ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GE){
+      res = new BoolVal( ((IntVal) val1).i >= ((IntVal) val2).i );
+    }
+    else
+      res = new UndVal();
 
-    // ... code needed ...
-
+    if ( ((BoolVal)res).b == true )
+      return funcStack.peek().labelMap.get(n.lab.name);
+    else 
+      return CONTINUE;
   }	
-
+/*
   // Jump ---
   //  Label lab;
   //
