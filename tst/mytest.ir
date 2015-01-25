@@ -4,7 +4,11 @@ _main ()
 (i, b)
 {
  t1=2*4
+ t2 = !false
+ t3 = t1 + 5
  call _printInt(t1)
+ call _printBool(t2)
+ call _printInt(t3)
  return 
 }
 

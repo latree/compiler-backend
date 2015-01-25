@@ -161,8 +161,8 @@ public class IR1Interp {
   //
   public static void execute(IR1.Program n) throws Exception { 
     funcMap = new HashMap<String,IR1.Func>();
-    //storage = new ArrayList<Val>();
-    //retVal = Val.Undefined;
+    heap = new ArrayList<Val>();
+    retVal = new UndVal();
     for (IR1.Func f: n.funcs)
       funcMap.put(f.name, f);
     execute(funcMap.get("main"));
@@ -282,27 +282,32 @@ public class IR1Interp {
       funcStack.peek().tempMap.put( ((IR1.Temp) n.dst).num, res );
     return CONTINUE;  
   }
-/*
+
   // Unop ---
   //  UOP op;
   //  Dest dst;
   //  Src src;
   //
   static int execute(IR1.Unop n) throws Exception {
-    Val val = execute(n.src);
+    Val val = evaluate(n.src);
     Val res;
     if (n.op == IR1.UOP.NEG)
       res = new IntVal(-((IntVal) val).i);
-    else if (n.op == IR0.UOP.NOT)
+    else if (n.op == IR1.UOP.NOT)
       res = new BoolVal(!((BoolVal) val).b);
-    else
+    else{
+      res = new UndVal();
       throw new IntException("Wrong op in Unop inst: " + n.op);
+    }
 
-    // ... code needed ...
+    if (n.dst instanceof IR1.Id)
+      funcStack.peek().varMap.put( ((IR1.Id) n.dst).name, res );
+    else if (n.dst instanceof IR1.Temp)
+      funcStack.peek().tempMap.put( ((IR1.Temp) n.dst).num, res );
 
     return CONTINUE;  
   }
-*/
+
   // Move ---
   //  Dest dst;
   //  Src src;
@@ -334,18 +339,43 @@ public class IR1Interp {
     // ... code needed ...
 
   }
-
+*/
   // CJump ---
   //  ROP op;
   //  Src src1, src2;
   //  Label lab;
   //
   static int execute(IR1.CJump n) throws Exception {
+    Val val1 = evaluate(n.src1);
+    Val val2 = evaluate(n.src2);
+    Val res;
+    if (n.op == IR1.ROP.EQ){
+      res = new BoolVal( ((IntVal) val1).i == ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.NE){
+      res = new BoolVal( ((IntVal) val1).i != ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LT){
+      res = new BoolVal( ((IntVal) val1).i < ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.LE){
+      res = new BoolVal( ((IntVal) val1).i <= ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GT){
+      res = new BoolVal( ((IntVal) val1).i > ((IntVal) val2).i );
+    }
+    else if (n.op == IR1.ROP.GE){
+      res = new BoolVal( ((IntVal) val1).i >= ((IntVal) val2).i );
+    }
+    else
+      res = new UndVal();
 
-    // ... code needed ...
-
+    if ( ((BoolVal)res).b == true )
+      return funcStack.peek().labelMap.get(n.lab.name);
+    else 
+      return CONTINUE;
   }	
-
+/*
   // Jump ---
   //  Label lab;
   //
