@@ -161,8 +161,8 @@ public class IR1Interp {
   //
   public static void execute(IR1.Program n) throws Exception { 
     funcMap = new HashMap<String,IR1.Func>();
-    //storage = new ArrayList<Val>();
-    //retVal = Val.Undefined;
+    heap = new ArrayList<Val>();
+    retVal = new UndVal();
     for (IR1.Func f: n.funcs)
       funcMap.put(f.name, f);
     execute(funcMap.get("main"));
