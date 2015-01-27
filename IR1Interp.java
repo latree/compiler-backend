@@ -396,11 +396,22 @@ public class IR1Interp {
       || n.name.equals("printInt")
       || n.name.equals("printBool")){
       
-      if(n.args.length == 0)
+      if (n.args.length == 0)
 	System.out.println();
       for (int i =0; i<n.args.length; ++i){
 	  System.out.println(evaluate((n.args)[i]));
       }
+    }
+    else if (n.name.equals("malloc")){
+      if ( (n.args)[0] instanceof IR1.IntLit){
+        int space =  ( (IR1.IntLit) (n.args)[0]).i / 4;
+	for (int i = 0; i < space; ++i)
+          heap.add(new UndVal());
+      }
+      else
+	System.out.println("No indicated number of mem to create");  
+      //for testing purpose
+      //System.out.println(heap);
     }
     return CONTINUE;
   }
@@ -416,7 +427,6 @@ public class IR1Interp {
     
     return RETURN;
   }
-/*
   //-----------------------------------------------------------------
   // Evaluatation routines for address
   //-----------------------------------------------------------------
@@ -427,9 +437,9 @@ public class IR1Interp {
   //  Src base;  
   //  int offset;
   //
+/*
   static int evalute(IR1.Addr n) throws Exception {
-
-    // ... code needed ...
+    //code needed
 
   }
 */
