@@ -407,10 +407,26 @@ public class IR1Interp {
         int space =  ( (IR1.IntLit) (n.args)[0]).i / 4;
 	for (int i = 0; i < space; ++i)
           heap.add(new UndVal());
+        if (n.rdst instanceof IR1.Temp){
+          funcStack.peek().tempMap.put( ((IR1.Temp) n.rdst).num,
+                                       new IntVal( (heap.size()-space) ));
+        }
+        else if (n.rdst instanceof IR1.Id){
+          funcStack.peek().varMap.put( ((IR1.Id) n.rdst).name,
+                                       new IntVal( (heap.size()-space) ));
+        }
+        else
+          System.out.println("Malloc Des can only be Id or Temp");
       }
       else
 	System.out.println("No indicated number of mem to create");  
       //for testing purpose
+      if (n.rdst instanceof IR1.Temp)
+        System.out.println( funcStack.peek().tempMap.get( ((IR1.Temp) (n.rdst)).num ) );
+      else if (n.rdst instanceof IR1.Id)
+        System.out.println( funcStack.peek().varMap.get( ((IR1.Id) (n.rdst)).name ) );
+      else 
+        System.out.println("Malloc Des can only be Id or Temp");
       //System.out.println(heap);
     }
     return CONTINUE;

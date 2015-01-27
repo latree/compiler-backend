@@ -3,7 +3,8 @@
 _main ()
 (i, b)
 {
- call _malloc(8)
+ t1 = call _malloc(8)
+ b = call _malloc(4)
  return 
 }
 
