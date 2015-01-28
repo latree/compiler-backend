@@ -1,8 +1,0 @@
-Exception in thread "main" java.lang.IndexOutOfBoundsException: Index: 4, Size: 4
-	at java.util.ArrayList.rangeCheck(ArrayList.java:653)
-	at java.util.ArrayList.get(ArrayList.java:429)
-	at IR1Interp.execute(IR1Interp.java:328)
-	at IR1Interp.execute(IR1Interp.java:214)
-	at IR1Interp.execute(IR1Interp.java:198)
-	at IR1Interp.execute(IR1Interp.java:168)
-	at IR1Interp.main(IR1Interp.java:144)
