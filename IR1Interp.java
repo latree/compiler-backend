@@ -429,8 +429,22 @@ public class IR1Interp {
       //  System.out.println("Malloc Des can only be Id or Temp");
       //System.out.println(heap);
     }
-    else
-      System.out.println("not defined yet");
+    else{  
+    //user defined functions
+    //1.push its new Env to funcStack
+    //2.collect arguments info to its Env
+    //execute(funcMap.get(n.name));
+    //returen value if needed to "static Val retVal;"
+      funcEnv calleeEnv = new funcEnv();
+      funcStack.push(calleeEnv);
+      execute(funcMap.get(n.name));  
+      if(n.rdst != null){
+        if(n.rdst instanceof IR1.Temp)
+          funcStack.peek().tempMap.put(((IR1.Temp) n.rdst).num, retVal);
+        if(n.rdst instanceof IR1.Id)
+          funcStack.peek().varMap.put(((IR1.Id) n.rdst).name, retVal);
+      }
+    }
     return CONTINUE;
   }
 
@@ -438,8 +452,7 @@ public class IR1Interp {
   //  Src val;
   //
   static int execute(IR1.Return n) throws Exception {
-
-    // ... code needed ...
+    retVal = evaluate(n.val);
     env.rmAll();
     funcStack.pop();
     
