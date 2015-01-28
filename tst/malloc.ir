@@ -1,0 +1,11 @@
+# IR1 Program
+
+_main ()
+{
+ t2 = call _malloc(8)
+ call _printInt(t2)
+ t3 = call _malloc(8)
+ call _printInt(t3)
+ return
+}
+

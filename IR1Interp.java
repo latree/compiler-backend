@@ -404,7 +404,7 @@ public class IR1Interp {
     }
     else if (n.name.equals("malloc")){
       if ( (n.args)[0] instanceof IR1.IntLit){
-        int space =  ( (IR1.IntLit) (n.args)[0]).i / 4;
+        int space =   ((IR1.IntLit) (n.args)[0]).i / 4;
 	for (int i = 0; i < space; ++i)
           heap.add(new UndVal());
         if (n.rdst instanceof IR1.Temp){
@@ -470,9 +470,9 @@ public class IR1Interp {
   //
   static Val evaluate(IR1.Addr n) throws Exception {
     if (n.offset == 0)
-      return new IntVal(((IntVal) evaluate(n.base)).i / 4);
+      return new IntVal( (((IntVal) evaluate(n.base)).i / 4) + (((IntVal) evaluate(n.base)).i % 4) );
     else
-      return new IntVal( (((IntVal) evaluate(n.base)).i / 4)  + n.offset );
+      return new IntVal( (((IntVal) evaluate(n.base)).i / 4) + (((IntVal) evaluate(n.base)).i % 4)  + n.offset );
   }
   //-----------------------------------------------------------------
   // Evaluatation routines for operands
