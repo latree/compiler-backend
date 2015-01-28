@@ -319,15 +319,16 @@ public class IR1Interp {
       funcStack.peek().tempMap.put(((IR1.Temp) (n.dst)).num, evaluate(n.src));
     return CONTINUE;
   }
-/*
   // Load ---  
   //  Dest dst;
   //  Addr addr;
   //
   static int execute(IR1.Load n) throws Exception {
-
-    // ... code needed ...
-
+      if (n.dst instanceof IR1.Temp)
+        funcStack.peek().tempMap.put( ((IR1.Temp)n.dst).num , heap.get( ((IntVal) evaluate(n.addr)).i) );
+      if (n.dst instanceof IR1.Id)
+        funcStack.peek().varMap.put( ((IR1.Id)n.dst).name , heap.get( ((IntVal) evaluate(n.addr)).i) );
+    return CONTINUE;
   }
 
   // Store ---  
@@ -335,11 +336,10 @@ public class IR1Interp {
   //  Src src;
   //
   static int execute(IR1.Store n) throws Exception {
-
-    // ... code needed ...
-
+    heap.add( ((IntVal) evaluate(n.addr)).i, evaluate(n.src));
+    return CONTINUE;
   }
-*/
+
   // CJump ---
   //  ROP op;
   //  Src src1, src2;
@@ -421,14 +421,16 @@ public class IR1Interp {
       else
 	System.out.println("No indicated number of mem to create");  
       //for testing purpose
-      if (n.rdst instanceof IR1.Temp)
-        System.out.println( funcStack.peek().tempMap.get( ((IR1.Temp) (n.rdst)).num ) );
-      else if (n.rdst instanceof IR1.Id)
-        System.out.println( funcStack.peek().varMap.get( ((IR1.Id) (n.rdst)).name ) );
-      else 
-        System.out.println("Malloc Des can only be Id or Temp");
+      //if (n.rdst instanceof IR1.Temp)
+      //  System.out.println( funcStack.peek().tempMap.get( ((IR1.Temp) (n.rdst)).num ) );
+      //else if (n.rdst instanceof IR1.Id)
+      //  System.out.println( funcStack.peek().varMap.get( ((IR1.Id) (n.rdst)).name ) );
+      //else 
+      //  System.out.println("Malloc Des can only be Id or Temp");
       //System.out.println(heap);
     }
+    else
+      System.out.println("not defined yet");
     return CONTINUE;
   }
 
@@ -453,12 +455,12 @@ public class IR1Interp {
   //  Src base;  
   //  int offset;
   //
-/*
-  static int evalute(IR1.Addr n) throws Exception {
-    //code needed
-
+  static Val evaluate(IR1.Addr n) throws Exception {
+    if (n.offset == 0)
+      return new IntVal(((IntVal) evaluate(n.base)).i / 4);
+    else
+      return new IntVal( (((IntVal) evaluate(n.base)).i / 4)  + n.offset );
   }
-*/
   //-----------------------------------------------------------------
   // Evaluatation routines for operands
   //-----------------------------------------------------------------
