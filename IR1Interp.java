@@ -375,16 +375,12 @@ public class IR1Interp {
     else 
       return CONTINUE;
   }	
-/*
   // Jump ---
   //  Label lab;
   //
   static int execute(IR1.Jump n) throws Exception {
-
-    // ... code needed ...
-
+    return funcStack.peek().labelMap.get(n.lab.name);
   }	
-*/
   // Call ---
   //  String name;
   //  Src[] args;
