@@ -1,4 +1,4 @@
-// 
+//Bin Gao 
 // A starting version of IR1 interpreter. (For CS322 W15 Assignment 1)
 //
 //
@@ -125,7 +125,9 @@ public class IR1Interp {
   static final int CONTINUE = 0;
   static final int RETURN = -1;	
 
-
+  // Argument Array
+  // for temperary hold the arguments value for callee
+  static ArrayList<Val> argTemp = new ArrayList<Val>();
 
   //-----------------------------------------------------------------
   // The main method
@@ -187,10 +189,11 @@ public class IR1Interp {
 	funcStack.peek().labelMap.put(((IR1.LabelDec)n.code[i]).name, i);
     }
     //collect args decls
-    for (int j=0; j<n.params.length; ++j){
-      funcStack.peek().varMap.put(n.params[j] ,new UndVal());
+    if (!argTemp.isEmpty()){
+      for (int j=0; j<n.params.length; ++j){
+        funcStack.peek().varMap.put(n.params[j] ,argTemp.get(j));
+      }
     }
-    
     
     // The fetch-and-execute loop
     int idx = 0;
@@ -431,6 +434,14 @@ public class IR1Interp {
     //2.collect arguments info to its Env
     //execute(funcMap.get(n.name));
     //returen value if needed to "static Val retVal;"
+      if (n.args.length == 0){
+        //do nothing
+      }
+      else{
+        for (int i =0; i<n.args.length; ++i){
+          argTemp.add(i, evaluate(n.args[i]));
+        }
+      }
       funcEnv calleeEnv = new funcEnv();
       funcStack.push(calleeEnv);
       execute(funcMap.get(n.name));  
@@ -440,10 +451,12 @@ public class IR1Interp {
         if(n.rdst instanceof IR1.Id)
           funcStack.peek().varMap.put(((IR1.Id) n.rdst).name, retVal);
       }
+      //clear the retVal
+      retVal = new UndVal();
     }
     return CONTINUE;
   }
-
+ 
   // Return ---  
   //  Src val;
   //
@@ -451,7 +464,7 @@ public class IR1Interp {
     retVal = evaluate(n.val);
     env.rmAll();
     funcStack.pop();
-    
+    argTemp.clear();
     return RETURN;
   }
   //-----------------------------------------------------------------
@@ -468,7 +481,7 @@ public class IR1Interp {
     if (n.offset == 0)
       return new IntVal( (((IntVal) evaluate(n.base)).i / 4) + (((IntVal) evaluate(n.base)).i % 4) );
     else
-      return new IntVal( (((IntVal) evaluate(n.base)).i / 4) + (((IntVal) evaluate(n.base)).i % 4)  + n.offset );
+      return new IntVal( (((IntVal) evaluate(n.base)).i / 4) + (((IntVal) evaluate(n.base)).i % 4)  + n.offset/4 );
   }
   //-----------------------------------------------------------------
   // Evaluatation routines for operands
@@ -483,7 +496,8 @@ public class IR1Interp {
       else if (n instanceof IR1.IntLit)  val = new IntVal(((IR1.IntLit) n).i);
       else if (n instanceof IR1.BoolLit) val = new BoolVal(((IR1.BoolLit) n).b);
       else if (n instanceof IR1.StrLit)  val = new StrVal(((IR1.StrLit) n).s);
-      else val = new UndVal();
+      else 
+        val = new UndVal();
     return val;
   }
 /*
