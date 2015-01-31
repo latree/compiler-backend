@@ -1,0 +1,67 @@
+------------------------------------------
+Attribute Grammars for SC0 Code Generation
+------------------------------------------
+
+EXPRESSIONS:
+
+// Arithmetic Expressions
+//
+Exp -> (Binop OP Exp1 Exp2)
+OP  ->  + | - | * | /
+
+
+// Logic Expressions
+//
+Exp -> (Binop OP Exp1 Exp2)
+OP  ->  || | &&
+
+
+// Relational Expressions
+//
+Exp -> (Binop OP Exp1 Exp2)
+OP  -> == | != | < | <= | > | >=
+
+
+// Unary Expressions
+//
+Exp -> (Unop OP Exp1)
+OP  ->  - | !
+
+
+// NewArray and ArrayElm
+//
+Exp -> (NewArray <IntLit>)
+
+
+Exp -> (ArrayElm Exp1 Exp2)
+
+
+
+// Base Expressions
+//
+Exp -> <Id>
+
+
+Exp -> <IntLit>
+
+
+Exp -> <BoolLit>
+
+
+
+STATEMENTS:
+
+
+Stmt -> Assign Exp` Exp2
+
+
+Stmt -> If Exp Stmt1 [Else Stmt2]  
+
+
+Stmt -> While Exp Stmt1 
+
+
+Stmt -> Print Exp
+
+
+

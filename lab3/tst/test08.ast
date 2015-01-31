@@ -1,0 +1,7 @@
+# AST0 Program
+Assign flag false
+If flag Assign x 1
+If flag Assign y 1 Else Assign y 2
+While flag Assign z 1
+While (Unop ! (Unop ! flag)) Assign z 1
+Print y
