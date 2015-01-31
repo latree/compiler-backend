@@ -1,0 +1,12 @@
+# IR0 Program
+ a = 0
+ b = 0
+ t1 = a > 0
+ t2 = b > 0
+ t3 = t1 || t2
+ if t3 == false goto L0
+ x = 1
+ goto L1
+L0:
+ x = 2
+L1:

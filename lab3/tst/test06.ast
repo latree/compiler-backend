@@ -1,0 +1,6 @@
+# AST0 Program
+Assign a (NewArray 3)
+Assign (ArrayElm a 0) 3
+Assign (ArrayElm a 1) 4
+Assign (ArrayElm a 2) 5
+Print (ArrayElm a 2)

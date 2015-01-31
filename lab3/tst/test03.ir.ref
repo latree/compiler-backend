@@ -1,0 +1,10 @@
+# IR0 Program
+ b = false
+ t1 = true || b
+ if t1 == false goto L0
+ x = 1
+ goto L1
+L0:
+ x = 2
+L1:
+ print (x)
