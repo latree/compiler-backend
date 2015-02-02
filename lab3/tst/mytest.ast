@@ -1,5 +1,1 @@
-Print a
-Print 1
-Print true
-Print false
-
+Print (Unop ! true)

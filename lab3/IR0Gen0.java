@@ -71,7 +71,7 @@ class IR0Gen {
     else if (n instanceof Ast0.Print)  return gen((Ast0.Print) n);
     throw new GenException("Unknown Ast0 Stmt: " + n);
   }
-/*
+
   // Ast0.Assign ---
   // Ast0.Exp lhs, rhs;
   //
@@ -80,13 +80,17 @@ class IR0Gen {
   //                         | [lhs.l] = rhs.v ) # otherwise
   //
   static List<IR0.Inst> gen(Ast0.Assign n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
-    return code;
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	if (n.lhs instanceof Ast0.Id){
+		CodePack lhs = gen(n.lhs);
+		CodePack rhs = gen(n.rhs);
+		code.addAll(rhs.code);
+		code.addAll(lhs.code);
+		code.add(new IR0.Move((IR0.Id ) lhs.src, rhs.src));
+	}
+    	return code;
   }
-
+/*
   // Ast0.If ---
   // Ast0.Exp cond;
   // Ast0.Stmt s1, s2;
@@ -167,7 +171,6 @@ class IR0Gen {
     if (n instanceof Ast0.BoolLit)  return gen((Ast0.BoolLit) n);
     throw new GenException("Unknown Exp node: " + n);
   }
-/*
   // Ast0.Binop ---
   // Ast0.BOP op;
   // Ast0.Exp e1,e2;
@@ -178,10 +181,14 @@ class IR0Gen {
   //         + "t = e1.v op e2.v"
   //
   static CodePack gen(Ast0.Binop n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+  	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	CodePack cp2 = gen(n.e2);
+	CodePack cp1 = gen(n.e1);
+	IR0.Temp t = new IR0.Temp();
+	code.addAll(cp2.code);
+	code.addAll(cp1.code);
+	code.add(new IR0.Binop(gen(n.op), t, cp1.src, cp2.src));
+	return new CodePack(t, code);
   }
 
   // Ast0.Unop ---
@@ -193,12 +200,14 @@ class IR0Gen {
   //   code: e.c + "t = op e.v"
   //
   static CodePack gen(Ast0.Unop n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	IR0.Temp t = new IR0.Temp();
+	CodePack cp = gen(n.e);
+	code.addAll(cp.code);
+	code.add(new IR0.Unop(gen(n.op), t, cp.src));
+	return new CodePack(t,code);
   }
-  
+/*  
   // Ast0.NewArray ---
   // int len;
   // 
@@ -281,6 +290,14 @@ class IR0Gen {
     case GE:  irOp = IR0.ROP.GE;  break;
     }
     return irOp;
+  }
+  static IR0.UOP gen(Ast0.UOP op){
+  	IR0.UOP irOp = null;
+	switch(op){
+		case NEG: irOp = IR0.UOP.NEG; break;
+		case NOT: irOp = IR0.UOP.NOT; break;
+	}
+	return irOp;
   }
    
 }
