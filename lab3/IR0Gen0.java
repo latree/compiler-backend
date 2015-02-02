@@ -71,7 +71,7 @@ class IR0Gen {
     else if (n instanceof Ast0.Print)  return gen((Ast0.Print) n);
     throw new GenException("Unknown Ast0 Stmt: " + n);
   }
-
+/*
   // Ast0.Assign ---
   // Ast0.Exp lhs, rhs;
   //
@@ -129,7 +129,7 @@ class IR0Gen {
 
     return code;
   }
-  
+*/  
   // Ast0.Print ---
   // Ast0.Exp [arg];
   //
@@ -140,9 +140,18 @@ class IR0Gen {
   //
   static List<IR0.Inst> gen(Ast0.Print n) throws Exception {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+     	if (n.arg==null){
+   		code.add(new IR0.Print());
+ 	}
+	else{
+		CodePack cPack = gen(n.arg);
+		if (cPack.code.isEmpty())
+			code.add(new IR0.Print(cPack.src));
+		else{
+			code.addAll(cPack.code);
+			code.add(new IR0.Print(cPack.src));
+		}
+	}
     return code;
   }
 
@@ -158,7 +167,7 @@ class IR0Gen {
     if (n instanceof Ast0.BoolLit)  return gen((Ast0.BoolLit) n);
     throw new GenException("Unknown Exp node: " + n);
   }
-
+/*
   // Ast0.Binop ---
   // Ast0.BOP op;
   // Ast0.Exp e1,e2;
@@ -231,32 +240,26 @@ class IR0Gen {
 
     return new AddrPack(addr, code);
   }
-
+*/
   // Ast0.Id ---
   // String nm;
   //
   static CodePack gen(Ast0.Id n) throws Exception {
-
-    // ... need code ...
-
+  	return new CodePack(new IR0.Id(n.nm), new ArrayList<IR0.Inst>());
   }
 
   // Ast0.IntLit ---
   // int i;
   //
   static CodePack gen(Ast0.IntLit n) throws Exception {
-
-    // ... need code ...
-
+	return new CodePack(new IR0.IntLit(n.i),new ArrayList<IR0.Inst>());
   }
 
   // Ast0.BoolLit ---
   // boolean b;
   //
   static CodePack gen(Ast0.BoolLit n) throws Exception {
-
-    // ... need code ...
-
+ 	return new CodePack(new IR0.BoolLit(n.b),new ArrayList<IR0.Inst>()); 
   }
 
   // OPERATORS
