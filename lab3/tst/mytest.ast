@@ -1,1 +1,2 @@
-Print (Unop ! true)
+Assign (ArrayElm a 0) 3
+

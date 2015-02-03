@@ -1,18 +1,8 @@
 # IR0 Program
- t1 = true
- t2 = true
- if 1 > 0 goto L1
- t2 = false
-L1:
- if t2 == true goto L0
- t3 = true
- if 1 > 2 goto L2
- t3 = false
-L2:
- if t3 == true goto L0
- t1 = false
-L0:
- x = t1
+ t1 = 1 > 0
+ t2 = 1 > 2
+ t3 = t1 || t2
+ x = t3
  t4 = 1 + 2
  t5 = 3 - 1
  t6 = t4 * t5

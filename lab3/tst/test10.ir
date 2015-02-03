@@ -8,19 +8,12 @@
  t5 = 0 * 4
  t6 = a + t5
  [t6] = t4
- t7 = false
- if flag == false goto L1
- t8 = 0 * 4
- t9 = a + t8
- t10 = [t9]
- t11 = true
- if t10 < 0 goto L2
- t11 = false
-L2:
- if t11 == false goto L1
- t7 = true
-L1:
- if t7 == false goto L0
+ t7 = 0 * 4
+ t8 = a + t7
+ t9 = [t8]
+ t10 = t9 < 0
+ t11 = flag && t10
+ if t11 == false goto L0
  t12 = 1 * 4
  t13 = a + t12
  [t13] = 4
