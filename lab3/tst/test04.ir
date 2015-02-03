@@ -1,22 +1,12 @@
 # IR0 Program
  a = 0
  b = 0
- t1 = true
- t2 = true
- if a > 0 goto L2
- t2 = false
-L2:
- if t2 == true goto L1
- t3 = true
- if b > 0 goto L3
- t3 = false
-L3:
- if t3 == true goto L1
- t1 = false
-L1:
- if t1 == false goto L0
+ t1 = a > 0
+ t2 = b > 0
+ t3 = t1 || t2
+ if t3 == false goto L0
  x = 1
- goto L4
+ goto L1
 L0:
  x = 2
-L4:
+L1:

@@ -71,7 +71,7 @@ class IR0Gen {
     else if (n instanceof Ast0.Print)  return gen((Ast0.Print) n);
     throw new GenException("Unknown Ast0 Stmt: " + n);
   }
-/*
+
   // Ast0.Assign ---
   // Ast0.Exp lhs, rhs;
   //
@@ -80,13 +80,24 @@ class IR0Gen {
   //                         | [lhs.l] = rhs.v ) # otherwise
   //
   static List<IR0.Inst> gen(Ast0.Assign n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
-    return code;
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	if (n.lhs instanceof Ast0.Id){
+		CodePack rhs = gen(n.rhs);
+		CodePack lhs = gen(n.lhs);
+		code.addAll(rhs.code);
+		code.addAll(lhs.code);
+		code.add(new IR0.Move((IR0.Id ) lhs.src, rhs.src));
+	}
+	else{
+		CodePack rhs = gen(n.rhs);
+		AddrPack lhs = genAddr((Ast0.ArrayElm)n.lhs);
+		code.addAll(rhs.code);
+		code.addAll(lhs.code);
+		code.add(new IR0.Store(lhs.addr, rhs.src));
+		
+	}
+    	return code;
   }
-
   // Ast0.If ---
   // Ast0.Exp cond;
   // Ast0.Stmt s1, s2;
@@ -102,11 +113,26 @@ class IR0Gen {
   //         [+ "L2:"]
   //
   static List<IR0.Inst> gen(Ast0.If n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
-    return code;
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	IR0.Label l1 = new IR0.Label();
+	CodePack cond = gen(n.cond);
+	if (n.s2 != null){
+		IR0.Label l2 = new IR0.Label();
+		code.addAll(cond.code);
+		code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, l1));
+		code.addAll(gen(n.s1));
+		code.add(new IR0.Jump(l2));
+		code.add(new IR0.LabelDec(l1));
+		code.addAll(gen(n.s2));
+		code.add(new IR0.LabelDec(l2));
+	}
+	else{
+		code.addAll(cond.code);
+		code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, l1));
+                code.addAll(gen(n.s1));
+                code.add(new IR0.LabelDec(l1));
+	}
+    	return code;
   }
 
   // Ast0.While ---
@@ -123,13 +149,19 @@ class IR0Gen {
   //         + "L2:"
   //
   static List<IR0.Inst> gen(Ast0.While n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
-    return code;
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	IR0.Label l1 = new IR0.Label();
+	IR0.Label l2 = new IR0.Label();
+	CodePack cond = gen(n.cond);
+	code.add(new IR0.LabelDec(l1));
+	code.addAll(cond.code);
+	code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, l2));
+	code.addAll(gen(n.s));
+	code.add(new IR0.Jump(l1));
+        code.add(new IR0.LabelDec(l2));
+    	return code;
   }
-*/  
+  
   // Ast0.Print ---
   // Ast0.Exp [arg];
   //
@@ -167,7 +199,6 @@ class IR0Gen {
     if (n instanceof Ast0.BoolLit)  return gen((Ast0.BoolLit) n);
     throw new GenException("Unknown Exp node: " + n);
   }
-/*
   // Ast0.Binop ---
   // Ast0.BOP op;
   // Ast0.Exp e1,e2;
@@ -178,10 +209,14 @@ class IR0Gen {
   //         + "t = e1.v op e2.v"
   //
   static CodePack gen(Ast0.Binop n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+  	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	CodePack cp1 = gen(n.e1);
+	CodePack cp2 = gen(n.e2);
+	IR0.Temp t = new IR0.Temp();
+	code.addAll(cp1.code);
+	code.addAll(cp2.code);
+	code.add(new IR0.Binop(gen(n.op), t, cp1.src, cp2.src));
+	return new CodePack(t, code);
   }
 
   // Ast0.Unop ---
@@ -193,12 +228,13 @@ class IR0Gen {
   //   code: e.c + "t = op e.v"
   //
   static CodePack gen(Ast0.Unop n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	CodePack cp = gen(n.e);
+	IR0.Temp t = new IR0.Temp();
+	code.addAll(cp.code);
+	code.add(new IR0.Unop(gen(n.op), t, cp.src));
+	return new CodePack(t,code);
   }
-  
   // Ast0.NewArray ---
   // int len;
   // 
@@ -207,10 +243,10 @@ class IR0Gen {
   //   code: "t = malloc (len * 4)"
   //
   static CodePack gen(Ast0.NewArray n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-
-    // ... need code ...
-
+   	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	IR0.Temp t = new IR0.Temp();
+	code.add(new IR0.Malloc(t, new IR0.IntLit(n.len*4)));
+	return new CodePack(t, code);
   }
 
   // Ast0.ArrayElm ---
@@ -224,23 +260,36 @@ class IR0Gen {
   //         + "t3 = [t2]"
   //
   static CodePack gen(Ast0.ArrayElm n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-    IR0.Temp t = new IR0.Temp();
-
-    // ... need code ...
-
-    return new CodePack(t, code);
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+    	IR0.Temp t1 = new IR0.Temp();
+	IR0.Temp t2 = new IR0.Temp();
+	IR0.Temp t3 = new IR0.Temp();
+	CodePack ar = gen(n.ar);
+	CodePack idx = gen(n.idx);
+	code.addAll(ar.code);
+	code.addAll(idx.code);
+	code.add(new IR0.Binop(IR0.AOP.MUL, t1, idx.src, new IR0.IntLit(4)));
+	code.add(new IR0.Binop(IR0.AOP.ADD, t2, ar.src, t1));
+	code.add(new IR0.Load(t3, new IR0.Addr(t2)));
+    	return new CodePack(t3, code);
   }
-  
+
   static AddrPack genAddr(Ast0.ArrayElm n) throws Exception {
-    List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-    IR0.Addr addr;
-
-    // ... need code ...
-
-    return new AddrPack(addr, code);
+    	List<IR0.Inst> code = new ArrayList<IR0.Inst>();
+	IR0.Addr addr;
+	IR0.Temp t1 = new IR0.Temp();
+        IR0.Temp t2 = new IR0.Temp();
+	CodePack ar = gen(n.ar);
+	CodePack idx = gen(n.idx);
+	code.addAll(ar.code);
+	code.addAll(idx.code);
+	code.add(new IR0.Binop(IR0.AOP.MUL, t1, idx.src, new IR0.IntLit(4)));
+        code.add(new IR0.Binop(IR0.AOP.ADD, t2, ar.src, t1));
+	addr = new IR0.Addr(t2);
+	return new AddrPack(addr, code);
+		
   }
-*/
+
   // Ast0.Id ---
   // String nm;
   //
@@ -281,6 +330,14 @@ class IR0Gen {
     case GE:  irOp = IR0.ROP.GE;  break;
     }
     return irOp;
+  }
+  static IR0.UOP gen(Ast0.UOP op){
+  	IR0.UOP irOp = null;
+	switch(op){
+		case NEG: irOp = IR0.UOP.NEG; break;
+		case NOT: irOp = IR0.UOP.NOT; break;
+	}
+	return irOp;
   }
    
 }

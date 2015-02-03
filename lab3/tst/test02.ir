@@ -1,8 +1,5 @@
 # IR0 Program
- t1 = true
- if 3 > 0 goto L1
- t1 = false
-L1:
+ t1 = 3 > 0
  if t1 == false goto L0
  x = 1
 L0:
