@@ -1,0 +1,60 @@
+Compiled from "Sum.java"
+class Sum {
+  Sum();
+    Code:
+       0: aload_0       
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return        
+
+  public static int sum(int[], int);
+    Code:
+       0: iconst_0      
+       1: istore_2      
+       2: iconst_0      
+       3: istore_3      
+       4: iload_3       
+       5: iload_1       
+       6: if_icmpge     22
+       9: iload_2       
+      10: aload_0       
+      11: iload_3       
+      12: iaload        
+      13: iadd          
+      14: istore_2      
+      15: iload_3       
+      16: iconst_1      
+      17: iadd          
+      18: istore_3      
+      19: goto          4
+      22: iload_2       
+      23: ireturn       
+
+  public static void main(java.lang.String[]);
+    Code:
+       0: iconst_3      
+       1: newarray       int
+       3: astore_1      
+       4: aload_1       
+       5: iconst_0      
+       6: iconst_1      
+       7: iastore       
+       8: aload_1       
+       9: iconst_1      
+      10: iconst_2      
+      11: iastore       
+      12: aload_1       
+      13: iconst_2      
+      14: iconst_3      
+      15: iastore       
+      16: aload_1       
+      17: iconst_3      
+      18: invokestatic  #2                  // Method sum:([II)I
+      21: istore_2      
+      22: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      25: ldc           #4                  // String Array sum:
+      27: invokevirtual #5                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+      30: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
+      33: iload_2       
+      34: invokevirtual #6                  // Method java/io/PrintStream.println:(I)V
+      37: return        
+}

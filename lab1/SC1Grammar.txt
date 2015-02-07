@@ -1,0 +1,62 @@
+IR1 Grammar (for CS322 S'14)
+
+Program -> {StrDef} {FunDef}
+
+StrDef -> "StrLit" <IntLit> ":" <StrLit>   // IntLit is strLit's ID
+
+FunDef -> "Func" <IntLit> ":" <IntLit>     // 1st IntLit is func's ID, 2nd is #params
+          {Inst}
+
+Inst   -> Inst0                   // Inst with no explict operand
+        | Inst1 <IntLit>          // Inst with one operand
+
+Inst0  -> "ALOAD" | "ASTORE" | "NEWARRAY" | "PRINT" | "NEG" | "ADD" | "SUB" |
+          "MUL" | "DIV" | "AND" | "OR" | "SWAP" | "VRETURN" | "RETURN"
+
+Inst1  -> "CONST" | "LOAD" | "STORE" | "GOTO" | "IFZ" | "IFNZ" | "IFEQ" |
+          "IFNE" | "IFLT" | "IFLE" | "IFGT" | "IFGE" | "SPRINT" | "CALL"
+
+
+Instruction Definitions:
+
+Instruction  Sematics                            Stack (bottom<-->top)
+----------------------------------------------------------------------
+CONST n      load constant n to stack            -> n
+LOAD  n      load var[n] to stack                -> val 
+STORE n      store val to var[n]                 val ->
+
+ALOAD        load array element                  arrayref, idx -> val
+ASTORE       store val to array element          arrayref, idx, val ->
+NEWARRAY     allocate new array                  count -> arrayref
+
+NEG          - val                               val -> result
+ADD          val1 + val2                         val1, val2 -> result
+SUB          val1 - val2                         val1, val2 -> result
+MUL          val1 * val2                         val1, val2 -> result
+DIV          val1 / val2                         val1, val2 -> result
+AND          val1 & val2                         val1, val2 -> result
+OR           val1 | val2                         val1, val2 -> result
+SWAP         swap top two stack elements         val1, val2 -> val2, val1
+
+GOTO n       pc = pc + n
+IFZ  n       if (val==0)     pc = pc + n         val ->
+IFNZ n       if (val!=0)     pc = pc + n         val ->
+IFEQ n       if (val1==val2) pc = pc + n         val1, val2 ->
+IFNE n       if (val1==val2) pc = pc + n         val1, val2 ->  
+IFLT n       if (val1==val2) pc = pc + n         val1, val2 ->
+IFLE n       if (val1==val2) pc = pc + n         val1, val2 ->
+IFGT n       if (val1==val2) pc = pc + n         val1, val2 ->
+IFGE n       if (val1==val2) pc = pc + n         val1, val2 ->
+
+PRINT        print val                           val ->
+SPRINT n     print the nth string literal
+
+CALL   n     call the nth function           
+               caller:                           arg1,...,argk ->
+               callee: args in var[0]..var[k-1]    
+
+RETURN       return from procedure
+VRETURN      return a value from function    
+               callee:                           val ->
+               caller:                           -> val
+----------------------------------------------------------------------
