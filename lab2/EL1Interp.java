@@ -13,6 +13,8 @@
 //
 //
 import java.io.*;
+import java.util.*;
+
 
 public class EL1Interp {
 
@@ -68,7 +70,18 @@ public class EL1Interp {
       }
       throw new Exception("Variable " + var + " not defined");
     }
+    public String toString(){
+      Env env = this;
+      String str = "";
+      for (; env!=null; env=env.rest) {
+        str += env.var + "," + env.val;
+      }
+      return str;
+    }
   }
+
+  // function stack
+  static Stack<Env> funcStack = new Stack<Env>();
 
   // The main routine
   //
@@ -155,6 +168,17 @@ public class EL1Interp {
   static Val eval(EL1.Func n, Env env) throws Exception {
     return new Closure(n.var, n.body, env);
   }
+  //  static class Closure extends Val {
+  //    EL1.Var var;
+  //    EL1.Exp body;
+  //    Env env;
+  //    Closure(EL1.Var var, EL1.Exp body, Env env) {
+  //      this.var=var; this.body=body; this.env=env;
+  //    }
+  //    public String toString() {
+  //      return "(fn " + var + " => " + body + "; " + env + ")";
+  //    }
+  // }
 
   // Call ---
   //  Exp fn;
@@ -167,13 +191,37 @@ public class EL1Interp {
   //               Exp.val = c.body.val; env = stack.pop();}
   //
   static Val eval(EL1.Call n, Env env) throws Exception {
-    Val fval = eval(n.fn, env);
-    Closure c = (Closure) fval;
-
-    Val actual = eval(n.arg, env);
-    Env newenv = c.env.extend(c.var.s, actual);
-    return eval(c.body, newenv);
-
+    Val c = eval(n.fn, env);
+    Val actual = eval(n.arg, env); 
+    funcStack.push(env); 
+    env = env.extend(((Closure) c).var.s, actual);
+    Val result = eval( ((Closure)c).body, env);
+    env = funcStack.pop();
+    return result;
   }
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

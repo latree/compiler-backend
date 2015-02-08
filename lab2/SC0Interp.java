@@ -99,63 +99,57 @@ class SC0Interp {
       stack.push(n); 
       break;
     case "LOAD":  
-
-      stack.push(vars.get(n));// ... need code ...
-
+      stack.push(vars.get(n));
       break;
     case "STORE": 
-
-      vars.put(n, stack.pop()); // ... need code ...
-
+      vars.put(n, stack.pop());
       break; 
-    case "ALOAD": 
-
-      // ... need code ...
-
+    case "ALOAD":
+      idx = stack.pop();
+      aref = stack.pop();
+      val = heap.get(aref+idx);
+      stack.push(val);
       break; 
     case "ASTORE": 
-
-      // ... need code ...
-
+      val = stack.pop();
+      idx = stack.pop();
+      aref = stack.pop();
+      heap.set(idx+aref, val);
       break; 
     case "NEWARRAY": 
-
-      // ... need code ...
-
+      int size = stack.pop();
+      aref = heapAlloc(size);
+      stack.push(aref);
       break; 
     case "PRINT": 
-
-      // ... need code ...
-
+      System.out.println(stack.pop());
       break; 
     case "NEG":   
-
-      // ... need code ...
-
+      res = - (stack.pop());
+      stack.push(res);
       break;
     case "ADD": case "SUB":   
-    case "MUL": case "DIV":   
-    case "AND": case "OR":    
-
-      // ... need code ...
-
+    case "MUL": case "DIV":
+      val2 = stack.pop();
+      val1 = stack.pop();   
+      res = binop(instName,val1,val2);
+      stack.push(res);
       break; 
     case "GOTO":  
-
-      // ... need code ...
-
+      incr = n; 
       break;
     case "IFZ":   
-
-      // ... need code ...
-
+      val = stack.pop();
+      if (val == 0)
+        incr = n;
       break;
     case "IFEQ": case "IFNE":  
     case "IFLT": case "IFLE":  
     case "IFGT": case "IFGE":  
-
-      // ... need code ...
-
+      val2 = stack.pop();
+      val1 = stack.pop();
+      if (cond(instName,val1,val2))
+        incr = n;
       break;
     }
     return incr;
