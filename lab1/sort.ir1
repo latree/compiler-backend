@@ -1,0 +1,70 @@
+# Sort array a's elements into an ascending order
+#
+_sort (a, n)
+(i,j,t,k)
+{
+  k=0
+  i=0
+L0:
+  if i>=n goto L1
+  k=k+1
+  j=i+k
+  if j>=n goto L3
+  t1=i*4
+  t2=a+t1
+  t3=[t2]
+  t4=j*4
+  t5=a+t4
+  t6=[t5]
+  if t6<t3 goto L2
+  goto L0
+L3:
+  i=i+1
+  k=0
+  goto L0
+L2:
+  t=t3
+  [t2]=t6
+  [t5]=t
+  goto L0 
+L1:
+  return
+}
+
+_printArray (a, n)
+(i, val)
+{
+  i = 0
+L0:
+  if i >= n goto L1
+  t1 = i * 4
+  t2 = a + t1
+  val = [t2]
+  call _printInt(val)
+  i = i + 1
+  goto L0
+L1:
+  return 
+}
+
+_main ()
+(a)
+{
+  a = call _malloc(48)
+  [a] = 5
+  4[a] = 3
+  8[a] = 6
+  12[a] = 8
+  16[a] = 2
+  20[a] = 10
+  24[a] = 11
+  28[a] = 9
+  32[a] = 1
+  36[a] = 4
+  40[a] = 7
+  44[a] = 0
+  call _sort(a, 12)
+  call _printStr("Sorted array:")
+  call _printArray(a, 12)
+  return 
+}
