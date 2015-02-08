@@ -3,8 +3,55 @@
 StrLit 0: "Sorted array:"
 
 Func 1: 2
-
-# ... to be filled ...
+0.  CONST 0
+1.  CONST 0
+2.  STORE 2 # i
+3.  STORE 4 # t
+4.  CONST 0
+5.  STORE 3 #j
+6.  LOAD 2 # start of first loop
+7.  LOAD 1
+8.  IFGE 39 # goto return
+9.  LOAD 2
+10. CONST 1
+11. ADD
+12. STORE 3
+13. LOAD 3 # start of second loop
+14. LOAD 1
+15. IFGE 27 # goto ++i
+16. LOAD 0
+17. LOAD 2
+18. ALOAD
+19. LOAD 0
+20. LOAD 3
+21. ALOAD
+22. IFLE 15 # goto ++j
+23. LOAD 0
+24. LOAD 2
+25. ALOAD
+26. STORE 4
+27. LOAD 0
+28. LOAD 2
+29. LOAD 0
+30. LOAD 3
+31. ALOAD
+32. ASTORE
+33. LOAD 0
+34. LOAD 3
+35. LOAD 4
+36. ASTORE
+37. LOAD 3 # ++j
+38. CONST 1
+39. ADD
+40. STORE 3
+41. GOTO -28 # goto start of second loop
+42. LOAD 2 # ++i
+43. CONST 1
+44. ADD
+45. STORE 2 
+46. GOTO -40
+47. LOAD 0 # return
+48. VRETURN
 
 
 

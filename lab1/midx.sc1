@@ -4,7 +4,33 @@ StrLit 0: "Array midx:"
 
 Func 1: 2
 
-# ... to be filled ...
+0. CONST 0
+1. STORE 2 # max
+2. CONST 0
+3. STORE 3 # i
+4. CONST 0
+5. STORE 4 # midx
+6. LOAD 3 # start of the loop
+7. LOAD 1 # n
+8. IFGE 17 # instruction number of "vreturn"
+9. LOAD 0 # a
+10. LOAD 3
+11. ALOAD
+12. LOAD 2
+13. IFLE 7 # goto i=i+1, loop head
+14. LOAD 0
+15. LOAD 3
+16. ALOAD
+17. STORE 2 # max=a[i]
+18. LOAD 3
+19. STORE 4 # midx=i
+20. LOAD 3 # i=i+1
+21. CONST 1
+22. ADD
+23. STORE 3 
+24. GOTO -18 # goto start of loop 
+25. LOAD 4
+26. VRETURN
 
 
 

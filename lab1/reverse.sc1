@@ -3,8 +3,46 @@
 StrLit 0: "Reversed array:"
 
 Func 1: 2
+0. CONST 0
+1. CONST 0
+2. CONST 0
+3. STORE 2 # i
+4. STORE 3 # j
+5. STORE 4 # t
+6. LOAD 1 # n
+7. CONST 1
+8. SUB
+9. STORE 3 # j=n-1
+10. LOAD 2
+11. LOAD 3
+12. IFGT 24 # goto return
+13. LOAD 0
+14. LOAD 2
+15. ALOAD 
+16. STORE 4 # t=a[i];
+17. LOAD 0
+18. LOAD 2
+19. LOAD 0
+20. LOAD 3
+21. ALOAD
+22. ASTORE # a[i]=a[j];
+23. LOAD 0
+24. LOAD 3
+25. LOAD 4
+26. ASTORE # a[j]=t;
+27. LOAD 2
+28. CONST 1
+29. ADD
+30. STORE 2 #++i
+31. LOAD 3
+32. CONST 1
+33. SUB
+34. STORE 3 #--j
+35. GOTO -25
+36. LOAD 0
+37. VRETURN
 
-# ... to be filled ...
+
 
 
 

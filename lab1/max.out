@@ -1,2 +1,748 @@
+# 0.  CALL 2
+# 0.  CONST 12
+#  push 12 @ stack<0>
+# 1.  NEWARRAY
+#  pop 12 @ stack<1>
+#  alloc 12 @ mem[0]
+#  push 0 @ stack<0>
+# 2.  STORE 0
+#  pop 0 @ stack<1>
+#  put 0 @ vars[0]
+# 3.  LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 4.  CONST 0
+#  push 0 @ stack<1>
+# 5.  CONST 5
+#  push 5 @ stack<2>
+# 6.  ASTORE
+#  pop 5 @ stack<3>
+#  pop 0 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 5 @ mem[0]
+# 7.  LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8.  CONST 1
+#  push 1 @ stack<1>
+# 9.  CONST 3
+#  push 3 @ stack<2>
+# 10. ASTORE
+#  pop 3 @ stack<3>
+#  pop 1 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 3 @ mem[1]
+# 11. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 12. CONST 2
+#  push 2 @ stack<1>
+# 13. CONST 6
+#  push 6 @ stack<2>
+# 14. ASTORE
+#  pop 6 @ stack<3>
+#  pop 2 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 6 @ mem[2]
+# 15. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 16. CONST 3
+#  push 3 @ stack<1>
+# 17. CONST 8
+#  push 8 @ stack<2>
+# 18. ASTORE
+#  pop 8 @ stack<3>
+#  pop 3 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 8 @ mem[3]
+# 19. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 20. CONST 4
+#  push 4 @ stack<1>
+# 21. CONST 2
+#  push 2 @ stack<2>
+# 22. ASTORE
+#  pop 2 @ stack<3>
+#  pop 4 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 2 @ mem[4]
+# 23. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 24. CONST 5
+#  push 5 @ stack<1>
+# 25. CONST 10
+#  push 10 @ stack<2>
+# 26. ASTORE
+#  pop 10 @ stack<3>
+#  pop 5 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 10 @ mem[5]
+# 27. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 28. CONST 6
+#  push 6 @ stack<1>
+# 29. CONST 11
+#  push 11 @ stack<2>
+# 30. ASTORE
+#  pop 11 @ stack<3>
+#  pop 6 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 11 @ mem[6]
+# 31. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 32. CONST 7
+#  push 7 @ stack<1>
+# 33. CONST 9
+#  push 9 @ stack<2>
+# 34. ASTORE
+#  pop 9 @ stack<3>
+#  pop 7 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 9 @ mem[7]
+# 35. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 36. CONST 8
+#  push 8 @ stack<1>
+# 37. CONST 1
+#  push 1 @ stack<2>
+# 38. ASTORE
+#  pop 1 @ stack<3>
+#  pop 8 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 1 @ mem[8]
+# 39. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 40. CONST 9
+#  push 9 @ stack<1>
+# 41. CONST 4
+#  push 4 @ stack<2>
+# 42. ASTORE
+#  pop 4 @ stack<3>
+#  pop 9 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 4 @ mem[9]
+# 43. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 44. CONST 10
+#  push 10 @ stack<1>
+# 45. CONST 7
+#  push 7 @ stack<2>
+# 46. ASTORE
+#  pop 7 @ stack<3>
+#  pop 10 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 7 @ mem[10]
+# 47. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 48. CONST 11
+#  push 11 @ stack<1>
+# 49. CONST 0
+#  push 0 @ stack<2>
+# 50. ASTORE
+#  pop 0 @ stack<3>
+#  pop 11 @ stack<2>
+#  pop 0 @ stack<1>
+#  set 0 @ mem[11]
+# 51. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 52. VRETURN
+#  pop 0 @ stack<1>
+#  push 0 @ stack<0>
+# 1.  STORE 0
+#  pop 0 @ stack<1>
+#  put 0 @ vars[0]
+# 2.  LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 3.  CONST 12
+#  push 12 @ stack<1>
+# 4.  CALL 1
+#  pop 12 @ stack<2>
+#  put 12 @ vars[1]
+#  pop 0 @ stack<1>
+#  put 0 @ vars[0]
+# 0. CONST 0
+#  push 0 @ stack<0>
+# 1. STORE 2 # max
+#  pop 0 @ stack<1>
+#  put 0 @ vars[2]
+# 2. CONST 0
+#  push 0 @ stack<0>
+# 3. STORE 3 # i
+#  pop 0 @ stack<1>
+#  put 0 @ vars[3]
+# 4. LOAD 3
+#  get 0 @ vars[3]
+#  push 0 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 0 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 0 @ vars[3]
+#  push 0 @ stack<1>
+# 9. ALOAD
+#  pop 0 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 5 @ mem[0]
+#  push 5 @ stack<0>
+# 10. LOAD 2
+#  get 0 @ vars[2]
+#  push 0 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 0 @ stack<2>
+#  pop 5 @ stack<1>
+# 12. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 13. LOAD 3
+#  get 0 @ vars[3]
+#  push 0 @ stack<1>
+# 14. ALOAD
+#  pop 0 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 5 @ mem[0]
+#  push 5 @ stack<0>
+# 15. STORE 2
+#  pop 5 @ stack<1>
+#  put 5 @ vars[2]
+# 16. LOAD 3
+#  get 0 @ vars[3]
+#  push 0 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 0 @ stack<1>
+#  push 1 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 1 @ stack<1>
+#  put 1 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 1 @ vars[3]
+#  push 1 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 1 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 1 @ vars[3]
+#  push 1 @ stack<1>
+# 9. ALOAD
+#  pop 1 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 3 @ mem[1]
+#  push 3 @ stack<0>
+# 10. LOAD 2
+#  get 5 @ vars[2]
+#  push 5 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 5 @ stack<2>
+#  pop 3 @ stack<1>
+# 16. LOAD 3
+#  get 1 @ vars[3]
+#  push 1 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 1 @ stack<1>
+#  push 2 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 2 @ stack<1>
+#  put 2 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 2 @ vars[3]
+#  push 2 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 2 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 2 @ vars[3]
+#  push 2 @ stack<1>
+# 9. ALOAD
+#  pop 2 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 6 @ mem[2]
+#  push 6 @ stack<0>
+# 10. LOAD 2
+#  get 5 @ vars[2]
+#  push 5 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 5 @ stack<2>
+#  pop 6 @ stack<1>
+# 12. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 13. LOAD 3
+#  get 2 @ vars[3]
+#  push 2 @ stack<1>
+# 14. ALOAD
+#  pop 2 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 6 @ mem[2]
+#  push 6 @ stack<0>
+# 15. STORE 2
+#  pop 6 @ stack<1>
+#  put 6 @ vars[2]
+# 16. LOAD 3
+#  get 2 @ vars[3]
+#  push 2 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 2 @ stack<1>
+#  push 3 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 3 @ stack<1>
+#  put 3 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 3 @ vars[3]
+#  push 3 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 3 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 3 @ vars[3]
+#  push 3 @ stack<1>
+# 9. ALOAD
+#  pop 3 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 8 @ mem[3]
+#  push 8 @ stack<0>
+# 10. LOAD 2
+#  get 6 @ vars[2]
+#  push 6 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 6 @ stack<2>
+#  pop 8 @ stack<1>
+# 12. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 13. LOAD 3
+#  get 3 @ vars[3]
+#  push 3 @ stack<1>
+# 14. ALOAD
+#  pop 3 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 8 @ mem[3]
+#  push 8 @ stack<0>
+# 15. STORE 2
+#  pop 8 @ stack<1>
+#  put 8 @ vars[2]
+# 16. LOAD 3
+#  get 3 @ vars[3]
+#  push 3 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 3 @ stack<1>
+#  push 4 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 4 @ stack<1>
+#  put 4 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 4 @ vars[3]
+#  push 4 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 4 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 4 @ vars[3]
+#  push 4 @ stack<1>
+# 9. ALOAD
+#  pop 4 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 2 @ mem[4]
+#  push 2 @ stack<0>
+# 10. LOAD 2
+#  get 8 @ vars[2]
+#  push 8 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 8 @ stack<2>
+#  pop 2 @ stack<1>
+# 16. LOAD 3
+#  get 4 @ vars[3]
+#  push 4 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 4 @ stack<1>
+#  push 5 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 5 @ stack<1>
+#  put 5 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 5 @ vars[3]
+#  push 5 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 5 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 5 @ vars[3]
+#  push 5 @ stack<1>
+# 9. ALOAD
+#  pop 5 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 10 @ mem[5]
+#  push 10 @ stack<0>
+# 10. LOAD 2
+#  get 8 @ vars[2]
+#  push 8 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 8 @ stack<2>
+#  pop 10 @ stack<1>
+# 12. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 13. LOAD 3
+#  get 5 @ vars[3]
+#  push 5 @ stack<1>
+# 14. ALOAD
+#  pop 5 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 10 @ mem[5]
+#  push 10 @ stack<0>
+# 15. STORE 2
+#  pop 10 @ stack<1>
+#  put 10 @ vars[2]
+# 16. LOAD 3
+#  get 5 @ vars[3]
+#  push 5 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 5 @ stack<1>
+#  push 6 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 6 @ stack<1>
+#  put 6 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 6 @ vars[3]
+#  push 6 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 6 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 6 @ vars[3]
+#  push 6 @ stack<1>
+# 9. ALOAD
+#  pop 6 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 11 @ mem[6]
+#  push 11 @ stack<0>
+# 10. LOAD 2
+#  get 10 @ vars[2]
+#  push 10 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 10 @ stack<2>
+#  pop 11 @ stack<1>
+# 12. LOAD 0
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 13. LOAD 3
+#  get 6 @ vars[3]
+#  push 6 @ stack<1>
+# 14. ALOAD
+#  pop 6 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 11 @ mem[6]
+#  push 11 @ stack<0>
+# 15. STORE 2
+#  pop 11 @ stack<1>
+#  put 11 @ vars[2]
+# 16. LOAD 3
+#  get 6 @ vars[3]
+#  push 6 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 6 @ stack<1>
+#  push 7 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 7 @ stack<1>
+#  put 7 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 7 @ vars[3]
+#  push 7 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 7 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 7 @ vars[3]
+#  push 7 @ stack<1>
+# 9. ALOAD
+#  pop 7 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 9 @ mem[7]
+#  push 9 @ stack<0>
+# 10. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 11 @ stack<2>
+#  pop 9 @ stack<1>
+# 16. LOAD 3
+#  get 7 @ vars[3]
+#  push 7 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 7 @ stack<1>
+#  push 8 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 8 @ stack<1>
+#  put 8 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 8 @ vars[3]
+#  push 8 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 8 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 8 @ vars[3]
+#  push 8 @ stack<1>
+# 9. ALOAD
+#  pop 8 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 1 @ mem[8]
+#  push 1 @ stack<0>
+# 10. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 11 @ stack<2>
+#  pop 1 @ stack<1>
+# 16. LOAD 3
+#  get 8 @ vars[3]
+#  push 8 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 8 @ stack<1>
+#  push 9 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 9 @ stack<1>
+#  put 9 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 9 @ vars[3]
+#  push 9 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 9 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 9 @ vars[3]
+#  push 9 @ stack<1>
+# 9. ALOAD
+#  pop 9 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 4 @ mem[9]
+#  push 4 @ stack<0>
+# 10. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 11 @ stack<2>
+#  pop 4 @ stack<1>
+# 16. LOAD 3
+#  get 9 @ vars[3]
+#  push 9 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 9 @ stack<1>
+#  push 10 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 10 @ stack<1>
+#  put 10 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 10 @ vars[3]
+#  push 10 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 10 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 10 @ vars[3]
+#  push 10 @ stack<1>
+# 9. ALOAD
+#  pop 10 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 7 @ mem[10]
+#  push 7 @ stack<0>
+# 10. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 11 @ stack<2>
+#  pop 7 @ stack<1>
+# 16. LOAD 3
+#  get 10 @ vars[3]
+#  push 10 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 10 @ stack<1>
+#  push 11 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 11 @ stack<1>
+#  put 11 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 11 @ vars[3]
+#  push 11 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 11 @ stack<1>
+# 7. LOAD 0 # a
+#  get 0 @ vars[0]
+#  push 0 @ stack<0>
+# 8. LOAD 3
+#  get 11 @ vars[3]
+#  push 11 @ stack<1>
+# 9. ALOAD
+#  pop 11 @ stack<2>
+#  pop 0 @ stack<1>
+#  get 0 @ mem[11]
+#  push 0 @ stack<0>
+# 10. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<1>
+# 11. IFLE 5 # goto i=i+1, loop head
+#  pop 11 @ stack<2>
+#  pop 0 @ stack<1>
+# 16. LOAD 3
+#  get 11 @ vars[3]
+#  push 11 @ stack<0>
+# 17. CONST 1
+#  push 1 @ stack<1>
+# 18. ADD
+#  pop 1 @ stack<2>
+#  pop 11 @ stack<1>
+#  push 12 @ stack<0>
+# 19. STORE 3 # i=i+1
+#  pop 12 @ stack<1>
+#  put 12 @ vars[3]
+# 20. GOTO -16 # goto instruction No.4, start loop 
+# 4. LOAD 3
+#  get 12 @ vars[3]
+#  push 12 @ stack<0>
+# 5. LOAD 1 # n
+#  get 12 @ vars[1]
+#  push 12 @ stack<1>
+# 6. IFGE 15 # instruction number of "vreturn"
+#  pop 12 @ stack<2>
+#  pop 12 @ stack<1>
+# 21. LOAD 2
+#  get 11 @ vars[2]
+#  push 11 @ stack<0>
+# 22. VRETURN
+#  pop 11 @ stack<1>
+#  push 11 @ stack<0>
+# 5.  STORE 1
+#  pop 11 @ stack<1>
+#  put 11 @ vars[1]
+# 6.  SPRINT 0
 Array max:
-4444
+# 7.  LOAD 1
+#  get 11 @ vars[1]
+#  push 11 @ stack<0>
+# 8.  PRINT
+#  pop 11 @ stack<1>
+11
+# 9.  RETURN
