@@ -4,10 +4,29 @@ StrLit 0: "Array max:"
 
 Func 1: 2
 
-# ... to be filled ...
-
-
-
+0. CONST 0
+1. STORE 2 # max
+2. CONST 0
+3. STORE 3 # i
+4. LOAD 3
+5. LOAD 1 # n
+6. IFGE 15 # instruction number of "vreturn"
+7. LOAD 0 # a
+8. LOAD 3
+9. ALOAD
+10. LOAD 2
+11. IFLE 5 # goto i=i+1, loop head
+12. LOAD 0
+13. LOAD 3
+14. ALOAD
+15. STORE 2
+16. LOAD 3
+17. CONST 1
+18. ADD
+19. STORE 3 # i=i+1
+20. GOTO -16 # goto instruction No.4, start loop 
+21. LOAD 2
+22. VRETURN
 
 # initialize array to 12 elements
 Func 2: 0
