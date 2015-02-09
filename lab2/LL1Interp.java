@@ -24,15 +24,12 @@ public class LL1Interp {
   static int[] mem = new int[MEMSIZE];
   static int PC, ACC;
   static State status;
-  static Stack<Integer> st = new Stack<Integer>();//*********************
+  static Stack<Integer> funcStack = new Stack<Integer>();
 
   public static void main(String [] args) {
     PC = 0; ACC = 0; status = State.RUNNING;
     //load();
-
-    //new test adding 1,2,3
     load1();
-    
     // Instruction Semantics:
     // 	 LOAD n:  ACC <- mem[n]		 
     // 	 STORE n: mem[n] <- ACC		 
@@ -45,6 +42,7 @@ public class LL1Interp {
     //   RETURN:  PC <- saved caller's PC
     // 	 HALT:    stop execution               
     //
+
     do {
       Inst inst = code[PC++];
       int n = inst.n;
@@ -56,8 +54,8 @@ public class LL1Interp {
       case SUB:    ACC -= mem[n]; break;
       case JUMP:   PC = n; break;
       case JUMPZ:  if (ACC==0) PC = n; break;
-      case CALL:   st.push(PC); PC = n; break;	// ... need code ...
-      case RETURN: PC = st.pop(); break;	// ... need code ...
+      case CALL:   funcStack.push(PC); PC = n; break;
+      case RETURN: PC = funcStack.pop(); break;
       case HALT:   status = State.HALTED; break;
       default:     status = State.FAILED;
       }
@@ -99,51 +97,37 @@ public class LL1Interp {
     code[9] = new Inst(OpCode.RETURN);
   }
 
-  // A test program for adding 1, 2, and 3.
-  // main() calls f() which calls g(i),
-  // g(i) add 2 and 3 to i and returns the sum
-  //
-  // 0. CALL 2		; call f()
-  // 1. HALT 
-  //    ; f function starts here
-  // 2. CALL 4		; call g()
-  // 3. RETURN		; 
-  // 4. MOVE 2		; load 2 to ACC
-  // 5. STORE 0		; store 2 to men[0]
-  // 6. MOVE 3 		; load 3 to ACC
-  // 7. STORE 1		; store 3 to men[1]
-  // 8. MOVE 1 		; load 1 to ACC
-  // 9. ADD 0		; ACC += mem[0]
-  // 10. ADD 1		; ACC += mem[1]
-  // 11. RETURN
-  static void load1(){
+
+  // Exercise 3, main() -> f() -> g(1) -> result
+  // 0.  CALL 2	; call f();
+  // 1.  HALT
+  //     ; f() starts here
+  // 2.  CALL 4   ; call g(1)
+  // 3.  RETURN
+  // 4.  MOVE 2   ; load 2 to ACC
+  // 5.  STORE 0  ; store 2 to mem[0]
+  // 6.  MOVE 3   ; load 3 to ACC 
+  // 7.  STORE 1  ; store 3 to mem[1]
+  // 8.  MOVE 1   ; load 1 to ACC
+  // 9.  ADD 0    ; ACC += mem[0]
+  // 10. ADD 1    ; ACC += mem[1]
+  // 11. RETURN 
+  static void load1() {
     code[0] = new Inst(OpCode.CALL, 2);
     code[1] = new Inst(OpCode.HALT);
     code[2] = new Inst(OpCode.CALL, 4);
     code[3] = new Inst(OpCode.RETURN);
-    code[4] = new Inst(OpCode.MOVE, 3);
+    code[4] = new Inst(OpCode.MOVE, 2);
     code[5] = new Inst(OpCode.STORE, 0);
     code[6] = new Inst(OpCode.MOVE, 3);
     code[7] = new Inst(OpCode.STORE, 1);
     code[8] = new Inst(OpCode.MOVE, 1);
     code[9] = new Inst(OpCode.ADD, 0);
-    code[10]= new Inst(OpCode.ADD, 1);
-    code[11]= new Inst(OpCode.RETURN);
+    code[10] = new Inst(OpCode.ADD, 1);
+    code[11] = new Inst(OpCode.RETURN);
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
