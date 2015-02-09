@@ -11,7 +11,7 @@ import java.io.*;
 import ast0.*;
 import ir0.*;
 
-class IR0Gen {
+class IR0GenOpt {
 
   static class GenException extends Exception {
     public GenException(String msg) { super(msg); }
@@ -50,7 +50,7 @@ class IR0Gen {
       FileInputStream stream = new FileInputStream(args[0]);
       Ast0.Program p = new ast0Parser(stream).Program();
       stream.close();
-      IR0.Program ir0 = IR0Gen.gen(p);
+      IR0.Program ir0 = IR0GenOpt.gen(p);
       System.out.print(ir0.toString());
     } else {
       System.out.println("You must provide an input file name.");
@@ -217,11 +217,30 @@ class IR0Gen {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     CodePack l = gen(n.e1);
     CodePack r = gen(n.e2);
-    IR0.Temp t = new IR0.Temp();
-    code.addAll(l.code);
-    code.addAll(r.code);
-    code.add(new IR0.Binop(gen(n.op), t, l.src, r.src));
-    return new CodePack(t, code);
+    if (l.src instanceof IR0.IntLit && r.src instanceof IR0.IntLit){
+      IR0.BOP aop = gen(n.op);
+      IR0.Src res;
+        if(aop == IR0.AOP.ADD)
+          res = new IR0.IntLit(((IR0.IntLit) l.src).i + ((IR0.IntLit)r.src).i);
+        else if(aop == IR0.AOP.SUB)
+          res = new IR0.IntLit(((IR0.IntLit) l.src).i - ((IR0.IntLit)r.src).i);
+        else if(aop == IR0.AOP.MUL)
+          res = new IR0.IntLit(((IR0.IntLit) l.src).i * ((IR0.IntLit)r.src).i);
+        else if(aop == IR0.AOP.DIV)
+          res = new IR0.IntLit(((IR0.IntLit) l.src).i / ((IR0.IntLit)r.src).i);
+        else{
+          res = new IR0.IntLit(-1); 
+	  System.out.println("AOP not found");
+        }
+      return new CodePack(res);
+    }
+    else{
+      IR0.Temp t = new IR0.Temp();
+      code.addAll(l.code);
+      code.addAll(r.code);
+      code.add(new IR0.Binop(gen(n.op), t, l.src, r.src));
+      return new CodePack(t, code);
+    }
   }
 
   // Ast0.Binop --- logical op case
@@ -298,11 +317,31 @@ class IR0Gen {
   static CodePack gen(Ast0.Unop n) throws Exception {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     CodePack p = gen(n.e);
-    code.addAll(p.code);
-    IR0.UOP op = (n.op == Ast0.UOP.NEG) ? IR0.UOP.NEG : IR0.UOP.NOT;
-    IR0.Temp t = new IR0.Temp();
-    code.add(new IR0.Unop(op, t, p.src));
-    return new CodePack(t, code);
+    IR0.Src src;
+    IR0.UOP uop;
+    if(n.op == Ast0.UOP.NEG)
+      uop = IR0.UOP.NEG;
+    else if (n.op == Ast0.UOP.NOT)
+      uop = IR0.UOP.NOT;
+    else{
+      uop = null;
+      System.out.println("not defined OP");
+    }
+    if (p.src instanceof IR0.IntLit && uop == IR0.UOP.NEG){
+        src = new IR0.IntLit(- ((IR0.IntLit)p.src).i);
+        return new CodePack(src);
+    }
+    else if (p.src instanceof IR0.BoolLit && uop == IR0.UOP.NOT){
+        src = new IR0.BoolLit(! ((IR0.BoolLit)p.src).b);
+        return new CodePack(src);
+    }
+    else{
+      code.addAll(p.code);
+      IR0.UOP op = (n.op == Ast0.UOP.NEG) ? IR0.UOP.NEG : IR0.UOP.NOT;
+      IR0.Temp t = new IR0.Temp();
+      code.add(new IR0.Unop(op, t, p.src));
+      return new CodePack(t, code);
+    }
   }
   
   // Ast0.NewArray ---
