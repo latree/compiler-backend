@@ -1,0 +1,18 @@
+# IR0 Program
+ n = 1
+ t1 = true
+ if n > 0 goto L1
+ t1 = false
+L1:
+ if t1 == false goto L0
+ print (n)
+L0:
+L3:
+ t2 = true
+ if n == 0 goto L2
+ t2 = false
+L2:
+ if t2 == false goto L4
+ print (n)
+ goto L3
+L4:

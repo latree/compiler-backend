@@ -1,0 +1,7 @@
+# IR0 Program
+ t1 = true
+ if false == true goto L0
+ if true == true goto L0
+ t1 = false
+L0:
+ print (t1)

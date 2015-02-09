@@ -1,1 +1,8 @@
-Print (Binop + (Binop * 2 3) (Binop - 4 1))
+Print (Binop || false true)
+Print (Binop || true x)
+Print (Binop || x true)
+Print (Binop || false false)
+Print (Binop || true false)
+Print (Binop || false x)
+
+
