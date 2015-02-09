@@ -122,19 +122,29 @@ class IR0GenOpt {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     IR0.Label L1 = new IR0.Label();
     CodePack p = gen(n.cond);
-    code.addAll(p.code);
-    code.add(new IR0.CJump(IR0.ROP.EQ, p.src, IR0.FALSE, L1));
-    code.addAll(gen(n.s1));
-    if (n.s2 == null) {
-      code.add(new IR0.LabelDec(L1));
-    } else {	
-      IR0.Label L2 = new IR0.Label();
-      code.add(new IR0.Jump(L2));
-      code.add(new IR0.LabelDec(L1));
-      code.addAll(gen(n.s2));
-      code.add(new IR0.LabelDec(L2));
+    if(p.src instanceof IR0.BoolLit){
+      if (n.s2 == null){
+        return ( ((IR0.BoolLit)p.src).b ) ? gen(n.s1) : new ArrayList<IR0.Inst>();
+      }
+      else{
+        return ( ((IR0.BoolLit)p.src).b ) ? gen(n.s1) : gen(n.s2);
+      }
     }
-    return code;
+    else{
+      code.addAll(p.code);
+      code.add(new IR0.CJump(IR0.ROP.EQ, p.src, IR0.FALSE, L1));
+      code.addAll(gen(n.s1));
+      if (n.s2 == null) {
+        code.add(new IR0.LabelDec(L1));
+      } else {	
+        IR0.Label L2 = new IR0.Label();
+        code.add(new IR0.Jump(L2));
+        code.add(new IR0.LabelDec(L1));
+        code.addAll(gen(n.s2));
+        code.add(new IR0.LabelDec(L2));
+      }
+      return code;
+    }
   }
 
   // Ast0.While ---
@@ -152,16 +162,22 @@ class IR0GenOpt {
   //
   static List<IR0.Inst> gen(Ast0.While n) throws Exception {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-    IR0.Label L1 = new IR0.Label();
-    IR0.Label L2 = new IR0.Label();
-    code.add(new IR0.LabelDec(L1));
-    CodePack p = gen(n.cond);
-    code.addAll(p.code);
-    code.add(new IR0.CJump(IR0.ROP.EQ, p.src, IR0.FALSE, L2));
-    code.addAll(gen(n.s));
-    code.add(new IR0.Jump(L1));
-    code.add(new IR0.LabelDec(L2));
-    return code;
+    CodePack cond = gen(n.cond);
+    List<IR0.Inst> s = gen(n.s);
+    if (cond.src instanceof IR0.BoolLit && !((IR0.BoolLit) cond.src).b){
+      return new ArrayList<IR0.Inst>();
+    }
+    else{
+      IR0.Label L1 = new IR0.Label();
+      IR0.Label L2 = new IR0.Label();
+      code.add(new IR0.LabelDec(L1));
+      code.addAll(cond.code);
+      code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, L2));
+      code.addAll(s);
+      code.add(new IR0.Jump(L1));
+      code.add(new IR0.LabelDec(L2));
+      return code;
+    }
   }
   
   // Ast0.Print ---

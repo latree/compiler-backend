@@ -1,0 +1,24 @@
+3,7c3
+<  t1 = true
+<  if n > 0 goto L1
+<  t1 = false
+< L1:
+<  if t1 == false goto L0
+---
+>  if n <= 0 goto L0
+10,15c6,7
+< L3:
+<  t2 = true
+<  if n == 0 goto L2
+<  t2 = false
+< L2:
+<  if t2 == false goto L4
+---
+> L1:
+>  if n != 0 goto L2
+17,18c9,10
+<  goto L3
+< L4:
+---
+>  goto L1
+> L2:

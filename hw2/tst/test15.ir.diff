@@ -1,0 +1,28 @@
+6,10c6
+<  t3 = true
+<  if t1 > t2 goto L1
+<  t3 = false
+< L1:
+<  if t3 == false goto L0
+---
+>  if t1 <= t2 goto L0
+13,20c9,12
+< L3:
+<  t4 = a + 1
+<  t5 = b + 1
+<  t6 = true
+<  if t4 > t5 goto L2
+<  t6 = false
+< L2:
+<  if t6 == false goto L4
+---
+> L1:
+>  t3 = a + 1
+>  t4 = b + 1
+>  if t3 <= t4 goto L2
+22,23c14,15
+<  goto L3
+< L4:
+---
+>  goto L1
+> L2:
