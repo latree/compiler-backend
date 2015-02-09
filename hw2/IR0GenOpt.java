@@ -217,9 +217,9 @@ class IR0GenOpt {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     CodePack l = gen(n.e1);
     CodePack r = gen(n.e2);
+    IR0.BOP aop = gen(n.op);
+    IR0.Src res;
     if (l.src instanceof IR0.IntLit && r.src instanceof IR0.IntLit){
-      IR0.BOP aop = gen(n.op);
-      IR0.Src res;
         if(aop == IR0.AOP.ADD)
           res = new IR0.IntLit(((IR0.IntLit) l.src).i + ((IR0.IntLit)r.src).i);
         else if(aop == IR0.AOP.SUB)
@@ -262,20 +262,62 @@ class IR0GenOpt {
   //
   static CodePack genLOP(Ast0.Binop n) throws Exception {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-    IR0.BoolLit val = (n.op==Ast0.BOP.OR) ? IR0.TRUE : IR0.FALSE;
-    IR0.BoolLit nval = (n.op==Ast0.BOP.OR) ? IR0.FALSE : IR0.TRUE;
-    IR0.Temp t = new IR0.Temp();
-    IR0.Label L = new IR0.Label();
-    code.add(new IR0.Move(t, val));
     CodePack l = gen(n.e1);
-    code.addAll(l.code);
-    code.add(new IR0.CJump(IR0.ROP.EQ, l.src, val, L));
     CodePack r = gen(n.e2);
-    code.addAll(r.code);
-    code.add(new IR0.CJump(IR0.ROP.EQ, r.src, val, L));
-    code.add(new IR0.Move(t, nval));
-    code.add(new IR0.LabelDec(L));
-    return new CodePack(t, code);
+    IR0.BOP bop = gen(n.op);
+    IR0.Src res;
+    if(bop == IR0.AOP.OR && l.src instanceof IR0.BoolLit && (((IR0.BoolLit) l.src).b == true)){
+      res = new IR0.BoolLit(true);
+      return new CodePack(res);
+    }
+    else if(bop == IR0.AOP.OR && l.src instanceof IR0.BoolLit && (((IR0.BoolLit) l.src).b == false)){
+      return new CodePack(r.src);
+    }
+    else if(bop == IR0.AOP.OR && r.src instanceof IR0.BoolLit && (((IR0.BoolLit) r.src).b == true)){
+      res = new IR0.BoolLit(true);
+      return new CodePack(res);
+    }
+    else if(bop == IR0.AOP.OR && r.src instanceof IR0.BoolLit && (((IR0.BoolLit) r.src).b == false)){
+      return new CodePack(l.src);
+    }
+    else if(bop == IR0.AOP.OR && (l.src instanceof IR0.BoolLit && r.src instanceof IR0.BoolLit)
+	   && ((((IR0.BoolLit) l.src).b == false) && (((IR0.BoolLit) r.src).b == false)) ){
+      res = new IR0.BoolLit(false);
+      return new CodePack(res);
+    }
+    else if(bop == IR0.AOP.AND && l.src instanceof IR0.BoolLit && (((IR0.BoolLit) l.src).b == false)){
+      res = new IR0.BoolLit(false);
+      return new CodePack(res);
+    }
+    else if(bop == IR0.AOP.AND && l.src instanceof IR0.BoolLit && (((IR0.BoolLit) l.src).b == true)){
+      return new CodePack(r.src);
+    }
+    else if(bop == IR0.AOP.AND && r.src instanceof IR0.BoolLit && (((IR0.BoolLit) r.src).b == false)){
+      res = new IR0.BoolLit(false);
+      return new CodePack(res);
+    }
+    else if(bop == IR0.AOP.AND && r.src instanceof IR0.BoolLit && (((IR0.BoolLit) r.src).b == true)){
+      return new CodePack(l.src);
+    }
+    else if(bop == IR0.AOP.AND && (l.src instanceof IR0.BoolLit && r.src instanceof IR0.BoolLit)
+           && ((((IR0.BoolLit) l.src).b == true) && (((IR0.BoolLit) r.src).b == true)) ){
+      res = new IR0.BoolLit(true);
+      return new CodePack(res);
+    }
+    else{
+      IR0.BoolLit val = (n.op==Ast0.BOP.OR) ? IR0.TRUE : IR0.FALSE;
+      IR0.BoolLit nval = (n.op==Ast0.BOP.OR) ? IR0.FALSE : IR0.TRUE;
+      IR0.Temp t = new IR0.Temp();
+      IR0.Label L = new IR0.Label();
+      code.add(new IR0.Move(t, val));
+      code.addAll(l.code);
+      code.add(new IR0.CJump(IR0.ROP.EQ, l.src, val, L));
+      code.addAll(r.code);
+      code.add(new IR0.CJump(IR0.ROP.EQ, r.src, val, L));
+      code.add(new IR0.Move(t, nval));
+      code.add(new IR0.LabelDec(L));
+      return new CodePack(t, code);
+    }
   }
 
   // Ast0.Binop --- relational op case
@@ -295,15 +337,49 @@ class IR0GenOpt {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     CodePack l = gen(n.e1);
     CodePack r = gen(n.e2);
-    IR0.Temp t = new IR0.Temp();
-    IR0.Label L = new IR0.Label();
-    code.addAll(l.code);
-    code.addAll(r.code);
-    code.add(new IR0.Move(t, IR0.TRUE));
-    code.add(new IR0.CJump((IR0.ROP)gen(n.op), l.src, r.src, L));
-    code.add(new IR0.Move(t, IR0.FALSE));
-    code.add(new IR0.LabelDec(L));
-    return new CodePack(t, code);
+    IR0.BOP bop = gen(n.op);
+    IR0.Src res;
+    if (l.src instanceof IR0.IntLit && r.src instanceof IR0.IntLit){
+      if(bop == IR0.ROP.EQ){
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i == ((IR0.IntLit) r.src).i);
+      }
+      else if(bop == IR0.ROP.NE){
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i != ((IR0.IntLit) r.src).i);
+      }
+      else if(bop == IR0.ROP.LT){
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i < ((IR0.IntLit) r.src).i);
+      }
+      else if(bop == IR0.ROP.LE){
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i <= ((IR0.IntLit) r.src).i);
+      }
+      else if(bop == IR0.ROP.GT){
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i > ((IR0.IntLit) r.src).i);
+      }
+      else{
+        res = new IR0.BoolLit(((IR0.IntLit) l.src).i >= ((IR0.IntLit) r.src).i);
+      }
+      return new CodePack(res);
+    }
+    else if(l.src instanceof IR0.BoolLit && r.src instanceof IR0.BoolLit){
+      if(bop == IR0.ROP.EQ){
+        res = new IR0.BoolLit(((IR0.BoolLit) l.src).b == ((IR0.BoolLit) r.src).b);
+      }
+      else{
+        res = new IR0.BoolLit(((IR0.BoolLit) l.src).b != ((IR0.BoolLit) r.src).b);
+      }
+      return new CodePack(res);
+    }
+    else{
+      IR0.Temp t = new IR0.Temp();
+      IR0.Label L = new IR0.Label();
+      code.addAll(l.code);
+      code.addAll(r.code);
+      code.add(new IR0.Move(t, IR0.TRUE));
+      code.add(new IR0.CJump((IR0.ROP)gen(n.op), l.src, r.src, L));
+      code.add(new IR0.Move(t, IR0.FALSE));
+      code.add(new IR0.LabelDec(L));
+      return new CodePack(t, code);
+    }
   }
 
   // Ast0.Unop ---
