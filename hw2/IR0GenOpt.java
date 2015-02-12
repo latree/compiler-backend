@@ -120,7 +120,6 @@ class IR0GenOpt {
   //
   static List<IR0.Inst> gen(Ast0.If n) throws Exception {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
-    IR0.Label L1 = new IR0.Label();
     CodePack p = gen(n.cond);
     if(p.src instanceof IR0.BoolLit){
       if (n.s2 == null){
@@ -131,8 +130,19 @@ class IR0GenOpt {
       }
     }
     else{
-      code.addAll(p.code);
-      code.add(new IR0.CJump(IR0.ROP.EQ, p.src, IR0.FALSE, L1));
+      IR0.Label L1 = new IR0.Label();
+      if (n.cond instanceof Ast0.Binop && isROP(((Ast0.Binop) n.cond).op)){
+        CodePack lhs = gen(((Ast0.Binop) n.cond).e1);
+        CodePack rhs = gen(((Ast0.Binop) n.cond).e2);
+        code.addAll(lhs.code);
+        code.addAll(rhs.code);
+        code.add(new IR0.CJump(genCounterOp(((Ast0.Binop) n.cond).op),
+			       lhs.src, rhs.src, L1));
+      }
+      else{
+        code.addAll(p.code);
+        code.add(new IR0.CJump(IR0.ROP.EQ, p.src, IR0.FALSE, L1));
+      }
       code.addAll(gen(n.s1));
       if (n.s2 == null) {
         code.add(new IR0.LabelDec(L1));
@@ -171,8 +181,17 @@ class IR0GenOpt {
       IR0.Label L1 = new IR0.Label();
       IR0.Label L2 = new IR0.Label();
       code.add(new IR0.LabelDec(L1));
-      code.addAll(cond.code);
-      code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, L2));
+      if (n.cond instanceof Ast0.Binop && isROP(((Ast0.Binop) n.cond).op)){
+        CodePack lhs = gen(((Ast0.Binop) n.cond).e1);
+        CodePack rhs = gen(((Ast0.Binop) n.cond).e2);
+        code.addAll(lhs.code);
+        code.addAll(rhs.code);
+        code.add(new IR0.CJump(genCounterOp(((Ast0.Binop) n.cond).op),
+                               lhs.src, rhs.src, L1));
+      } else{
+        code.addAll(cond.code);
+        code.add(new IR0.CJump(IR0.ROP.EQ, cond.src, IR0.FALSE, L2));
+      }
       code.addAll(s);
       code.add(new IR0.Jump(L1));
       code.add(new IR0.LabelDec(L2));
@@ -472,14 +491,20 @@ class IR0GenOpt {
     List<IR0.Inst> code = new ArrayList<IR0.Inst>();
     CodePack ar = gen(n.ar);
     CodePack idx = gen(n.idx);
-    code.addAll(ar.code);
-    code.addAll(idx.code);
-    IR0.Temp t1 = new IR0.Temp();
-    IR0.Temp t2 = new IR0.Temp();
-    IR0.IntLit intSz = new IR0.IntLit(4);
-    code.add(new IR0.Binop(IR0.AOP.MUL, t1, idx.src, intSz));
-    code.add(new IR0.Binop(IR0.AOP.ADD, t2, ar.src, t1));
-    return new AddrPack(new IR0.Addr(t2, 0), code);
+    if (idx.src instanceof IR0.IntLit){
+      IR0.Addr res = new IR0.Addr(ar.src, ((IR0.IntLit) idx.src).i*4);
+      return new AddrPack(res);
+    }
+    else{
+      code.addAll(ar.code);
+      code.addAll(idx.code);
+      IR0.Temp t1 = new IR0.Temp();
+      IR0.Temp t2 = new IR0.Temp();
+      IR0.IntLit intSz = new IR0.IntLit(4);
+      code.add(new IR0.Binop(IR0.AOP.MUL, t1, idx.src, intSz));
+      code.add(new IR0.Binop(IR0.AOP.ADD, t2, ar.src, t1));
+      return new AddrPack(new IR0.Addr(t2, 0), code);
+    }
   }
 
   // Ast0.Id ---
@@ -545,5 +570,25 @@ class IR0GenOpt {
     }
     return false;
   }
+
+  static boolean isROP(IR0.BOP op) {
+    if (op instanceof IR0.ROP)
+      return true;
+    else
+      return false;
+  }
+  
+  static IR0.ROP genCounterOp(Ast0.BOP op){
+     IR0.ROP counterOp = null;
+       if(op == Ast0.BOP.EQ){ counterOp = IR0.ROP.NE; }
+       else if(op == Ast0.BOP.NE){ counterOp = IR0.ROP.EQ; }
+       else if(op == Ast0.BOP.LT){ counterOp = IR0.ROP.GE; }
+       else if(op == Ast0.BOP.LE){ counterOp = IR0.ROP.GT; }
+       else if(op == Ast0.BOP.GT){ counterOp = IR0.ROP.LE; }
+       else counterOp = IR0.ROP.LE;
+     
+     return counterOp;
+  }
+
    
 }
