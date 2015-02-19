@@ -1,0 +1,9 @@
+# Stack Code (SC0)
+
+0. CONST 3
+1. CONST 0
+2. IFLE +3
+3. CONST 1
+4. STORE 0
+5. LOAD 0
+6. PRINT

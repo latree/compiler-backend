@@ -17,6 +17,7 @@ class SC0Gen {
   // The var array
   //
   static ArrayList<String> vars = new ArrayList<String>();
+  
 
   // The main routine
   //
@@ -40,6 +41,8 @@ class SC0Gen {
   // Ast0.Program ---
   // Ast0.Stmt[] stmts;
   //
+
+  // p.code -> stmts.code
   static List<String> gen(Ast0.Program n) throws Exception {
     ArrayList<String> code = new ArrayList<String>();
     for (Ast0.Stmt s: n.stmts)
@@ -60,26 +63,45 @@ class SC0Gen {
   // Ast0.Assign ---
   // Ast0.Exp lhs, rhs;
   //
+
+  // n.code -> lhs.code
+  // 	    +  rhs.code
+  //        +  
   static List<String> gen(Ast0.Assign n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    List<String> lhsCode = gen((Ast0.Exp) n.lhs);
+    code.addAll(gen((Ast0.Exp) n.rhs));
+    //if ((Ast0.Exp) n.lhs instanceof Ast0.Id){
+      code.add("STORE " + vars.indexOf(((Ast0.Id) n.lhs).nm));
+    //}
     return code;
   }
+
 
   // Ast0.If ---
   // Ast0.Exp cond;
   // Ast0.Stmt s1, s2;
   //
   static List<String> gen(Ast0.If n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    List<String> condCode = gen((Ast0.Exp) n.cond);
+    List<String> s1Code = gen((Ast0.Stmt) n.s1);
+    List<String> s2Code = new ArrayList<String>();
+    String last = condCode.get(condCode.size()-1);
+    last = last.concat(" " + "+" + (s1Code.size()+1));
+    condCode.set(condCode.size()-1,last);
+    code.addAll(condCode);
+    code.addAll(s1Code);
+    if(n.s2 != null){
+      code.add("GOTO" + "+" + (s2Code.size()+1));
+    }
+    if (n.s2 != null){
+      s2Code = gen((Ast0.Stmt) n.s2);
+      code.addAll(s2Code);
+    }
     return code;
   }
-
+/*
   // Ast0.While ---
   // Ast0.Exp cond;
   // Ast0.Stmt s;
@@ -91,7 +113,7 @@ class SC0Gen {
 
     return code;
   }
-  
+*/
   // Ast0.Print ---
   // Ast0.PrArg arg;
   //
@@ -119,10 +141,10 @@ class SC0Gen {
   // Ast0.Exp e1,e2;
   //
   static List<String> gen(Ast0.Binop n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    code.addAll(gen((Ast0.Exp) n.e1));
+    code.addAll(gen((Ast0.Exp) n.e2));
+    code.add(gen((Ast0.BOP) n.op));
     return code;
   }
 
@@ -131,13 +153,13 @@ class SC0Gen {
   // Ast0.Exp e;
   //
   static List<String> gen(Ast0.Unop n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    code.addAll(gen((Ast0.Exp) n.e));
+    code.add("NEG");
     return code;
   }
-  
+
+/*  
   // Ast0.NewArray ---
   // int len;
   // 
@@ -154,20 +176,22 @@ class SC0Gen {
   //
   static List<String> gen(Ast0.ArrayElm n) throws Exception {
     List<String> code;
-
-    // ... node code ...
-
+      
     return code;
   }
+*/
   
   // Ast0.Id ---
   // String nm;
   //
   static List<String> gen(Ast0.Id n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    if (vars.contains(n.nm)){
+      code.add("LOAD " + vars.indexOf(n.nm));
+    } else{
+      vars.add(n.nm);
+      code.add("LOAD " + vars.indexOf(n.nm));
+    }
     return code;
   }
 
@@ -175,10 +199,8 @@ class SC0Gen {
   // int i;
   //
   static List<String> gen(Ast0.IntLit n) throws Exception {
-    List<String> code;
-
-    // ... node code ...
-
+    List<String> code = new ArrayList<String>();
+    code.add("CONST " + n.i);
     return code;
   }
 
@@ -201,14 +223,13 @@ class SC0Gen {
     case DIV: return "DIV";
     case AND: return "AND";
     case OR:  return "OR";
-    case EQ:  return "IFEQ";
-    case NE:  return "IFNE"; 
-    case LT:  return "IFLT"; 
-    case LE:  return "IFLE"; 
-    case GT:  return "IFGT"; 
-    case GE:  return "IFGE"; 
+    case EQ:  return "IFNE";
+    case NE:  return "IFEQ"; 
+    case LT:  return "IFGE"; 
+    case LE:  return "IFGT"; 
+    case GT:  return "IFLE"; 
+    case GE:  return "IFLT"; 
     }
     return null;
   }
-   
 }
