@@ -1,0 +1,18 @@
+7,13c7,15
+< 4. OR +3
+< 5. CONST 1
+< 6. STORE 1
+< 7. CONST 2
+< 8. STORE 1
+< 9. LOAD 1
+< 10. PRINT
+---
+> 4. OR
+> 5. IFZ +4
+> 6. CONST 1
+> 7. STORE 1
+> 8. GOTO +3
+> 9. CONST 2
+> 10. STORE 1
+> 11. LOAD 1
+> 12. PRINT
