@@ -1,6 +1,7 @@
 # IR Program
 
 data _class_Test (sz=8): _main
+data _class_A (sz=0): 
 
 _main ()
 (a)
