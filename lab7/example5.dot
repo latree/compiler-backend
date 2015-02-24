@@ -1,0 +1,24 @@
+digraph CFG {
+subgraph main {
+main -> "main1";
+"main1"[shape="rectangle", label="1.  t1 = 1"];
+"main1" -> "main2";
+"main2"[shape="rectangle", label="2.  t2 = 2"];
+"main2" -> "main3";
+"main3"[shape="rectangle", label="3.  t3 = 3"];
+"main3" -> "main4";
+"main4"[shape="rectangle", label="4.  t4 = 4"];
+"main4" -> "main5";
+"main5"[shape="rectangle", label="5.  r = 0"];
+"main5" -> "main6";
+"main6"[shape="rectangle", label="6.  r = r + t4"];
+"main6" -> "main7";
+"main7"[shape="rectangle", label="7.  r = r + t3"];
+"main7" -> "main8";
+"main8"[shape="rectangle", label="8.  r = r + t2"];
+"main8" -> "main9";
+"main9"[shape="rectangle", label="9.  r = r + t1"];
+"main9" -> "main10";
+"main10"[shape="rectangle", label="10.  return r"];
+}
+}

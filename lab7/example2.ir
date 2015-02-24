@@ -1,0 +1,13 @@
+# IR Program
+
+_f ()
+(a,b,c)
+{
+ 1.    a = 2    
+ 2. L:
+ 3.    c = 1    
+ 4.    b = a + 1 
+ 5.    a = c * b  
+ 6.    if a < b goto L  
+ 7.    return b
+}

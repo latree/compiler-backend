@@ -1,0 +1,8 @@
+graph interence1 {
+node [shape=circle fontname=Courier];
+0[label="a"]
+1[label="b"]
+2[label="c"]
+0 -- 2
+1 -- 2
+}

@@ -1,0 +1,19 @@
+digraph CFG {
+subgraph f {
+f -> "f1";
+"f1"[shape="rectangle", label="1.  a = 0"];
+"f1" -> "f2";
+"f2"[shape="rectangle", label="2. L:"];
+"f2" -> "f3";
+"f3"[shape="rectangle", label="3.  b = a + 1"];
+"f3" -> "f4";
+"f4"[shape="rectangle", label="4.  c = c + b"];
+"f4" -> "f5";
+"f5"[shape="rectangle", label="5.  a = b * 2"];
+"f5" -> "f6";
+"f6"[shape="rectangle", label="6.  if a < 1000 goto L"];
+"f6" -> "f2";
+"f6" -> "f7";
+"f7"[shape="rectangle", label="7.  return c"];
+}
+}

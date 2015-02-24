@@ -1,0 +1,16 @@
+# IR Program
+
+_main ()
+(r)
+{
+ r = 0	
+ t1 = r
+ t2 = t1 + r
+ t3 = t2 + r
+ t4 = t3 + r
+ t5 = t4 + r
+# can extend obvious pattern here
+ r = t5 + r
+ return r 
+}
+

@@ -1,0 +1,42 @@
+digraph CFG {
+subgraph main {
+main -> "main1";
+"main1"[shape="rectangle", label="1.  e = 42"];
+"main1" -> "main2";
+"main2"[shape="rectangle", label="2.  b = a * 4"];
+"main2" -> "main3";
+"main3"[shape="rectangle", label="3.  goto L3"];
+"main3" -> "main15";
+"main3" -> "main4"[style=invis];
+"main4"[shape="rectangle", label="4. L0:"];
+"main4" -> "main5";
+"main5"[shape="rectangle", label="5.  c = a + b"];
+"main5" -> "main6";
+"main6"[shape="rectangle", label="6.  if c < 100 goto L1"];
+"main6" -> "main7";
+"main6" -> "main10";
+"main7"[shape="rectangle", label="7.  d = 10 + c"];
+"main7" -> "main8";
+"main8"[shape="rectangle", label="8.  e = d + d"];
+"main8" -> "main9";
+"main9"[shape="rectangle", label="9.  goto L2"];
+"main9" -> "main13";
+"main9" -> "main10"[style=invis];
+"main10"[shape="rectangle", label="10. L1:"];
+"main10" -> "main11";
+"main11"[shape="rectangle", label="11.  f = c / 10"];
+"main11" -> "main12";
+"main12"[shape="rectangle", label="12.  e = f - 40"];
+"main12" -> "main13";
+"main13"[shape="rectangle", label="13. L2:"];
+"main13" -> "main14";
+"main14"[shape="rectangle", label="14.  b = e - c"];
+"main14" -> "main15";
+"main15"[shape="rectangle", label="15. L3:"];
+"main15" -> "main16";
+"main16"[shape="rectangle", label="16.  if e > 0 goto L0"];
+"main16" -> "main17";
+"main16" -> "main4";
+"main17"[shape="rectangle", label="17.  return e"];
+}
+}

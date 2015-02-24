@@ -1,0 +1,23 @@
+# IR Program
+
+_main (a)
+(b,c,d,e,f)
+{
+ 1.     e = 42
+ 2.     b = a * 4
+ 3.     goto L3
+ 4. L0: 
+ 5.     c = a + b
+ 6.     if c < 100 goto L1
+ 7.     d = 10 + c
+ 8.     e = d + d
+ 9.     goto L2
+10. L1: 
+11.     f = c / 10
+12.     e = f - 40
+13. L2: 
+14.     b = e - c
+15. L3: 
+16.     if e > 0 goto L0
+17.     return e
+}
