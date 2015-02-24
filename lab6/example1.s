@@ -2,6 +2,19 @@
 	.text
 	.globl	f
 f:
+<<<<<<< HEAD
+=======
+        movl    $0, %eax        # initialize length count in eax
+        jmp     test
+loop:   incl    %eax            # increment count
+        addq    $4, %rdi        # and move to next array element
+
+test:   movl    (%rdi), %ecx    
+        cmpl    $0, %ecx        
+        jne     loop            # repeat if we're not done ...
+
+
+>>>>>>> 89073945568adf93d0ad8bb16f75a407534360f7
 	movl $0, %eax  		# initialize cnt = 0
 L:	
 	movl (%rdi), %ecx  	# load array element

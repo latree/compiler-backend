@@ -1,0 +1,16 @@
+# IR Program
+
+_f ()
+(a,b,c)
+{
+ 0. Begin:
+ 1.     goto B
+ 2. T:
+ 3.     x = x - 1
+ 4.     if x >= 0 goto T
+ 5.     return x
+ 6. B:  
+ 7.     x = 3
+ 8.     goto T
+ 9. End:
+}
