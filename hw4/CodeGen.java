@@ -36,12 +36,6 @@ class CodeGen {
   static final X86.Reg tempReg1 = X86.R10;  // scratch registers - need to 
   static final X86.Reg tempReg2 = X86.R11;  //  in sync with RegAlloc
 
-  // Per-function globals
-  //
-  static Map<IR1.Dest,X86.Reg> regMap; 	    // register mapping 
-  static int frameSize; 		    // in bytes
-  static String fnName; 		    // function's name
-
 
   //----------------------------------------------------------------------------------
   // Gen Routines
@@ -91,6 +85,14 @@ class CodeGen {
   // Note: The restoring of the saved registers is carried out in the 
   //   	code for Return instruction.
   //
+
+  // Per-function globals
+  //
+  static Map<IR1.Dest,X86.Reg> regMap;      // register mapping 
+  static int frameSize;                     // in bytes
+  static String fnName;                     // function's name
+  //
+
   static void gen(IR1.Func n) throws Exception { 
     fnName = n.name;
     System.out.print("\t\t\t  # " + n.header());
@@ -99,8 +101,36 @@ class CodeGen {
     regMap = RegAlloc.linearScan(n);  
     for (Map.Entry<IR1.Dest,X86.Reg> me: regMap.entrySet()) 
       System.out.print("\t\t\t  # " + me.getKey() + "\t" + me.getValue() + "\n");
+    
+    X86.emit0(".p2align 4,0x90");
+    X86.emit0(".globl"+"_"+fnName);
+    X86.emitLabel(new X86.Label("_"+fnName));
 
-    // ... need code ...
+    for (int i=0; i<X86.calleeSaveRegs.length; ++i){
+      X86.Reg r = X86.calleeSaveRegs[i];
+      if(regMap.containsValue(r)){
+        X86.emit1("pushq",r);
+      }
+    }
+
+    if (((X86.calleeSaveRegs.length % 16)*8) == 0) {
+      frameSize += 8;
+    }
+    X86.emit2("subq", new X86.Imm(frameSize), X86.RSP);
+    
+    if (n.params.length < 6){
+      X86.Reg[] 
+      for (int i=0; i<n.params.length;++i){
+        
+      }
+      X86.parallelMove(n.params.length, );
+    } else{
+      throw new GenException("function has more than 6 args");
+    }
+    
+    for (int j = 0; j < n.code.length; ++j) {
+      gen(n.code[j]);
+    }
 
   }
 
@@ -120,7 +150,7 @@ class CodeGen {
     else if (n instanceof IR1.Return)   gen((IR1.Return) n);
     else throw new GenException("Illegal IR1 instruction: " + n);
   }
-
+/*
   // For Binop, Unop, Move, and Load nodes:
   // - If dst is not assigned a register, it means that the
   //   instruction is dead; just return
@@ -270,7 +300,7 @@ class CodeGen {
 
 
   }	
-
+*/
   // Call ---
   //  String name;
   //  Src[] args;
