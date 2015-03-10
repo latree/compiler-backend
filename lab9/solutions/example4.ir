@@ -1,0 +1,81 @@
+# IR Program
+
+# test composition example
+#
+_main ()
+{
+  t1 = call _top()
+  call _printInt(t1)
+  return
+}
+
+# code bodies (from slides)
+#
+_code1(clo,z)
+(x)
+{
+  x = 8[clo]:I
+  t1 = x+z
+  return t1
+}
+
+_code2(clo,x)
+{
+  t1 = x+1
+  return t1
+}
+
+_code4(clo,x)
+(f,g)
+{
+  f = 8[clo]:P
+  g = 16[clo]:P
+  t1 = 0[g]:P
+  t2 = call *t1(g,x)
+  t3 = 0[f]:P
+  t4 = call *t3(f,t2)
+  return t4
+}
+
+# insert code for 
+#   (int)int compose(int(int) f, int(int) g) {
+#      return \x -> f (g x);
+#   }
+#
+_compose(f,g)
+{ 
+  t1 = call _malloc(24)
+  0[t1]:P = _code4
+  8[t1]:P = f
+  16[t1]:P = g
+  return t1
+}
+
+# insert code for
+#   (int)int h(int x) {
+#     return compose(\z -> x + z,
+#                    \x -> x + 1);
+#   }
+_h(x)
+{
+  t1 = call _malloc(12)
+  0[t1]:P = _code1
+  8[t1]:I = x
+  t2 = call _malloc(8)
+  0[t2]:P = _code2
+  t3 = call _compose(t1,t2)
+  return t3
+}
+
+# insert code for
+#  int top() {
+#    return (h(42))(0);
+#  }
+_top()
+{
+  t1 = call _h(42)
+  t2 = 0[t1]:P
+  t3 = call *t2 (t1,0)
+  return t3
+}
+
