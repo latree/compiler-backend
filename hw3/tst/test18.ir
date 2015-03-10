@@ -12,17 +12,16 @@ _main ()
  b = t1
  t2 = [b]:P
  t3 = [t2]:P
- call * t3(b, 10, 20)
+ call * t3(b, 10)
  t4 = 8[b]:I
  call _printInt(t4)
- t5 = 12[b]:I
- call _printInt(t5)
  return 
 }
 
-_B_setval (obj, u, v)
+_B_setval (obj, u)
 {
  8[obj]:I = u
- 12[obj]:I = v
+ t1 = 8[obj]:I
+ 12[obj]:I = t1
  return 
 }
