@@ -31,7 +31,7 @@ class CodeGen {
 
   // Per-program globals
   //
-  static List<String> stringLiterals; 	    // accumulated string literals, 
+  static List<String> stringLiterals = new ArrayList<String>();  // accumulated string literals, 
                                             //  indexed by position
   static final X86.Reg tempReg1 = X86.R10;  // scratch registers - need to 
   static final X86.Reg tempReg2 = X86.R11;  //  in sync with RegAlloc
@@ -105,33 +105,34 @@ class CodeGen {
     X86.emit0(".p2align 4,0x90");
     X86.emit0(".globl"+"_"+fnName);
     X86.emitLabel(new X86.Label("_"+fnName));
-
+    int j=0;
     for (int i=0; i<X86.calleeSaveRegs.length; ++i){
       X86.Reg r = X86.calleeSaveRegs[i];
       if(regMap.containsValue(r)){
         X86.emit1("pushq",r);
+        ++j;
       }
     }
 
-    if (((X86.calleeSaveRegs.length % 16)*8) == 0) {
+    if (((j*8) % 16) == 0) {
       frameSize += 8;
     }
     X86.emit2("subq", new X86.Imm(frameSize), X86.RSP);
     
     if (n.params.length < 6){
-      X86.Reg[] 
+      X86.Reg[] src = new X86.Reg[n.params.length]; 
       for (int i=0; i<n.params.length;++i){
-        
+        src[i] = regMap.get(n.params[i]);
       }
-      X86.parallelMove(n.params.length, );
+      X86.parallelMove(n.params.length, src, X86.argRegs, tempReg1);
     } else{
       throw new GenException("function has more than 6 args");
     }
     
-    for (int j = 0; j < n.code.length; ++j) {
-      gen(n.code[j]);
+    for (int i = 0; i < n.code.length; ++i) {
+      gen(n.code[i]);
     }
-
+    
   }
 
   // INSTRUCTIONS
@@ -316,11 +317,17 @@ class CodeGen {
   //   rax to target reg
   //
   static void gen(IR1.Call n) throws Exception {
-    X86.Reg dest = regMap.get(n.dst);
+    X86.Reg dest = regMap.get(n.rdst);
+    if (n.args.length < 6){
+      
+      X86.emit1("call", new X86.GLabel("_"+n.name));
+    } else{
+      throw new GenException("there are more than 6 args");
+    }
     if (dest == null)
       return;
-    X86.Reg src = gen_source(n.src, dest);
-    X86.emitMov(X86.Size.Q, src, dest);
+    //X86.Reg src = gen_source(n.src, dest);
+    //X86.emitMov(X86.Size.Q, src, dest);
   }
 
   // Return ---  
@@ -333,8 +340,8 @@ class CodeGen {
   // - emit a "ret"
   //
   static void gen(IR1.Return n) throws Exception {
-
-    // ... need code ...
+    X86.emit2("subq", new X86.Imm(frameSize), X86.RSP);
+    X86.emit0("ret");
 
 
   }
@@ -360,10 +367,16 @@ class CodeGen {
   // - emit a "lea" to move the label to the temp reg and return the reg
   //
   static X86.Reg gen_source(IR1.Src n, final X86.Reg temp) throws Exception {
-
-    // ... need code ...
-
-
+    if (n instanceof IR1.StrLit){
+      stringLiterals.add(((IR1.StrLit) n).s);
+      int ln = stringLiterals.indexOf(((IR1.StrLit) n).s);
+      X86.GLabel gl = new X86.GLabel("_S"+ln);
+      X86.emit2("leaq", new X86.AddrName(gl.s), temp);
+      return temp;
+    } else{
+System.out.println("not implemented");
+      return null;
+    }
   }
 
   // Addr ---
