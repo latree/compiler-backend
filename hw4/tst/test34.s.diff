@@ -1,0 +1,10 @@
+16,19c16,19
+< 	movq $0,%r10
+< 	cmpq %r10,%rdi
+< 	setg %bl
+< 	movzbq %bl,%rax
+---
+> 	movq $0,%r11
+> 	cmpq %r11,%rdi
+> 	setg %al
+> 	movzbq %al,%rax

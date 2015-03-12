@@ -1,0 +1,22 @@
+11,15c11,15
+< 	movq $2,%r10
+< 	movq $1,%r11
+< 	cmpq %r10,%r11
+< 	setl %bl
+< 	movzbq %bl,%rax
+---
+> 	movq $1,%r10
+> 	movq $2,%r11
+> 	cmpq %r11,%r10
+> 	setl %al
+> 	movzbq %al,%rax
+33,36c33,36
+< 	movq $10,%r10
+< 	cmpq %r10,%rax
+< 	sete %cl
+< 	movzbq %cl,%rax
+---
+> 	movq $10,%r11
+> 	cmpq %r11,%rax
+> 	sete %al
+> 	movzbq %al,%rax
