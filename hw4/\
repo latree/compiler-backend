@@ -32,7 +32,6 @@ class CodeGen {
   // Per-program globals
   //
   static List<String> stringLiterals = new ArrayList<String>();  // accumulated string literals, 
-  static int BR=0;
                                             //  indexed by position
   static final X86.Reg tempReg1 = X86.R10;  // scratch registers - need to 
   static final X86.Reg tempReg2 = X86.R11;  //  in sync with RegAlloc
@@ -96,7 +95,6 @@ class CodeGen {
 
   static void gen(IR1.Func n) throws Exception { 
     fnName = n.name;
-    frameSize = 0;
     System.out.print("\t\t\t  # " + n.header());
 
     // call reg-alloc routine to assign registers to all Ids and Temps
@@ -122,7 +120,7 @@ class CodeGen {
     if (frameSize > 0)
       X86.emit2("subq", new X86.Imm(frameSize), X86.RSP);
     
-    /*if (n.params.length < 6){
+    if (n.params.length < 6){
       X86.Reg[] src = new X86.Reg[n.params.length]; 
       for (int i=0; i<n.params.length;++i){
         src[i] = regMap.get(n.params[i]);
@@ -130,20 +128,6 @@ class CodeGen {
       X86.parallelMove(n.params.length, src, X86.argRegs, tempReg1);
     } else{
       throw new GenException("function has more than 6 args");
-    }*/
-    
-    if (n.params.length < 6){
-      int k=0;
-      IR1.Src src;
-      for (String p : n.params){
-	src = new IR1.Id(p);
-	if (!X86.argRegs[k].equals(regMap.get(src)))
-          if (regMap.containsKey(src))
-            X86.emit2("movq", X86.argRegs[k], regMap.get(src));
-	++k;
-      }
-    } else{
-      throw new GenException("there are more than 6 args");
     }
     
     for (int i = 0; i < n.code.length; ++i) {
@@ -213,18 +197,13 @@ class CodeGen {
           X86.emit2("movq", rr, tempReg1);
     	  rr = tempReg1;
     	}
-        if (! lr.equals(dstr))
-          X86.emit2("movq", lr, dstr);
+        X86.emit2("movq", lr, dstr);
         X86.emit0("cqto");
   	X86.emit1("idivq", rr);
       }else if (n.op == IR1.AOP.ADD || n.op == IR1.AOP.SUB
                 || n.op == IR1.AOP.MUL || n.op == IR1.AOP.AND || n.op == IR1.AOP.OR ){
-        if (!rr.equals(regMap.get(n.dst))){
-	  if (lr.equals(regMap.get(n.dst))){
-	    //do nothing
- 	  } else{
-            X86.emit2("movq", lr, dstr);  
-	  }
+        if (!rr.equals(regMap.get(n.dst)) && !lr.equals(regMap.get(n.dst))){
+          X86.emit2("movq", lr, dstr);  
         } else{
           X86.emit2("movq", rr, tempReg1);
           rr = tempReg1;
@@ -241,7 +220,7 @@ class CodeGen {
         } else
 	  X86.emit2("orq", rr, dstr);
       } else{
-        X86.Reg br = new X86.Reg(++BR, X86.Size.B);
+        X86.Reg br = new X86.Reg(0, X86.Size.B);
         X86.emit2("cmpq", rr, lr);
     	if (n.op == IR1.ROP.GT)
 	  X86.emit1("setg", br);
@@ -291,18 +270,8 @@ class CodeGen {
   // - generate a "mov"
   //  
   static void gen(IR1.Move n) throws Exception {
-    if (regMap.containsKey(n.dst)){
-      if (n.src instanceof IR1.IntLit || n.src instanceof IR1.StrLit
-      				      || n.src instanceof IR1.BoolLit){
-        gen_source(n.src, regMap.get(n.dst));
-      }else{
-        X86.Reg sr = gen_source(n.src, tempReg1);
-        if (! sr.equals(regMap.get(n.dst)))
-          X86.emit2("movq", sr, regMap.get(n.dst));
-      }
-    } else{
-      //dead
-    }
+    X86.Reg sr = gen_source(n.src, tempReg1);
+    X86.emit2("movq", sr, regMap.get(n.dst));
   }
 
   // Load ---  
@@ -316,12 +285,8 @@ class CodeGen {
   //     are integers)
   //
   static void gen(IR1.Load n) throws Exception {
-    if (regMap.containsKey(n.dst)){
-      X86.Operand addr = gen_addr(n.addr, tempReg1);
-      X86.emit2("movslq", addr, regMap.get(n.dst));
-    } else{
-      //dead
-    }
+    X86.Operand addr = gen_addr(n.addr, tempReg1);
+    X86.emit2("movslq", addr, regMap.get(n.dst));
   }
 
   // Store ---  
@@ -373,8 +338,8 @@ class CodeGen {
       X86.emit1("je", new X86.GLabel(fnName+"_"+n.lab.name));
     else 
 System.out.println("not implement yet");
-  }
-	
+  }	
+/*
   // Jump ---
   //  Label lab;
   //
@@ -383,10 +348,12 @@ System.out.println("not implement yet");
   //   . again, add func's name in front of IR1's label name
   //
   static void gen(IR1.Jump n) throws Exception {
-    X86.emit1("jmp", new X86.GLabel(fnName+"_"+n.lab.name));
-  }
 
-	
+    // ... need code ...
+
+
+  }	
+*/
   // Call ---
   //  String name;
   //  Src[] args;
@@ -418,9 +385,10 @@ System.out.println("not implement yet");
     } else{
       throw new GenException("there are more than 6 args");
     }
-    if (n.rdst == null)
+    if (dest == null)
       return;
-    X86.emitMov(X86.Size.Q, X86.RAX, regMap.get(n.rdst));
+    //X86.Reg src = gen_source(n.src, dest);
+    //X86.emitMov(X86.Size.Q, src, dest);
   }
 
   // Return ---  
@@ -433,20 +401,9 @@ System.out.println("not implement yet");
   // - emit a "ret"
   //
   static void gen(IR1.Return n) throws Exception {
-    if (n.val != null){
-      if (n.val instanceof IR1.IntLit || n.val instanceof IR1.StrLit
-                                      || n.val instanceof IR1.BoolLit){
-        gen_source(n.val, X86.RAX);
-      }else{
-        X86.Reg vr = gen_source(n.val, tempReg1);
-	if (! vr.equals(X86.RAX))
-	  X86.emit2("movq", vr, X86.RAX);
-      }
-    }
-      
     if (frameSize > 0)
       X86.emit2("addq", new X86.Imm(frameSize), X86.RSP);
-    for (int i=X86.calleeSaveRegs.length-1; i>=0; --i){
+    for (int i=0; i<X86.calleeSaveRegs.length; ++i){
       X86.Reg r = X86.calleeSaveRegs[i];
       if(regMap.containsValue(r)){
         X86.emit1("popq",r);
