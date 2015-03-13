@@ -11,8 +11,8 @@ _go:
 	movq $2,%r10
 	movq $1,%r11
 	cmpq %r10,%r11
-	setl %bl
-	movzbq %bl,%rax
+	setl %al
+	movzbq %al,%rax
 			  #  if t1 == false goto L0
 	movq $0,%r11
 	cmpq %r11,%rax
@@ -32,8 +32,8 @@ go_L0:
 			  #  t3 = t2 == 10
 	movq $10,%r10
 	cmpq %r10,%rax
-	sete %cl
-	movzbq %cl,%rax
+	sete %al
+	movzbq %al,%rax
 			  #  if t3 == false goto L2
 	movq $0,%r11
 	cmpq %r11,%rax

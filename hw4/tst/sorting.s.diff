@@ -1,48 +1,18 @@
-44,47c44,47
+44,45c44,45
 < 	movq $0,%r10
 < 	cmpq %r10,%rax
-< 	setge %bl
-< 	movzbq %bl,%rcx
 ---
 > 	movq $0,%r11
 > 	cmpq %r11,%rax
-> 	setge %cl
-> 	movzbq %cl,%rcx
-60,61c60,61
-< 	setle %cl
-< 	movzbq %cl,%rsi
----
-> 	setle %sil
-> 	movzbq %sil,%rsi
-88,89c88,89
-< 	setg %dl
-< 	movzbq %dl,%rsi
----
-> 	setg %sil
-> 	movzbq %sil,%rsi
-110,111c110,111
-< 	setne %sil
-< 	movzbq %sil,%rcx
----
-> 	setne %cl
-> 	movzbq %cl,%rcx
-201,204c201,204
+201,202c201,202
 < 	movq $10,%r10
 < 	cmpq %r10,%rbp
-< 	setl %dil
-< 	movzbq %dil,%rax
 ---
 > 	movq $10,%r11
 > 	cmpq %r11,%rbp
-> 	setl %al
-> 	movzbq %al,%rax
-245,248c245,248
+245,246c245,246
 < 	movq $10,%r10
 < 	cmpq %r10,%rbp
-< 	setl %bpl
-< 	movzbq %bpl,%rax
 ---
 > 	movq $10,%r11
 > 	cmpq %r11,%rbp
-> 	setl %al
-> 	movzbq %al,%rax

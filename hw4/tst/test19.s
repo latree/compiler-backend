@@ -17,8 +17,8 @@ _go:
 			  #  t1 = n > 0
 	movq $0,%r10
 	cmpq %r10,%rbx
-	setg %bl
-	movzbq %bl,%rax
+	setg %al
+	movzbq %al,%rax
 			  #  if t1 == false goto L0
 	movq $0,%r11
 	cmpq %r11,%rax

@@ -61,8 +61,8 @@ _go:
 	movq $2,%r10
 	movq $1,%r11
 	cmpq %r10,%r11
-	setl %bl
-	movzbq %bl,%rdx
+	setl %dl
+	movzbq %dl,%rdx
 			  #  if t6 == true goto L1
 	movq $1,%r11
 	cmpq %r11,%rdx
@@ -73,8 +73,8 @@ _go:
 	movq $4,%r10
 	movq $3,%r11
 	cmpq %r10,%r11
-	setg %cl
-	movzbq %cl,%rsi
+	setg %sil
+	movzbq %sil,%rsi
 			  #  if t8 == false goto L2
 	movq $0,%r11
 	cmpq %r11,%rsi
@@ -92,8 +92,8 @@ _go:
 			  #  t11 = 5 == t10
 	movq $5,%r11
 	cmpq %rsi,%r11
-	sete %dl
-	movzbq %dl,%rsi
+	sete %sil
+	movzbq %sil,%rsi
 			  #  if t11 == false goto L2
 	movq $0,%r11
 	cmpq %r11,%rsi

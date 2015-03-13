@@ -15,8 +15,8 @@ _foo:
 			  #  t1 = i > 0
 	movq $0,%r10
 	cmpq %r10,%rdi
-	setg %bl
-	movzbq %bl,%rax
+	setg %al
+	movzbq %al,%rax
 			  #  if t1 == false goto L0
 	movq $0,%r11
 	cmpq %r11,%rax

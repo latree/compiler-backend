@@ -42,8 +42,8 @@ _main:
 	movq $2,%r10
 	movq $1,%r11
 	cmpq %r10,%r11
-	setg %bl
-	movzbq %bl,%rcx
+	setg %cl
+	movzbq %cl,%rcx
 			  #  if t6 == true goto L0
 	movq $1,%r11
 	cmpq %r11,%rcx
@@ -54,8 +54,8 @@ _main:
 	movq $4,%r10
 	movq $3,%r11
 	cmpq %r10,%r11
-	setl %cl
-	movzbq %cl,%rdx
+	setl %dl
+	movzbq %dl,%rdx
 			  #  if t8 == false goto L1
 	movq $0,%r11
 	cmpq %r11,%rdx
