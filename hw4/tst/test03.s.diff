@@ -3,27 +3,19 @@
 < 	movq %r11,%rax
 ---
 > 	movq $9,%rax
-42,46c41,45
+42,44c41,43
 < 	movq $2,%r10
 < 	movq $1,%r11
 < 	cmpq %r10,%r11
-< 	setg %bl
-< 	movzbq %bl,%rcx
 ---
 > 	movq $1,%r10
 > 	movq $2,%r11
 > 	cmpq %r11,%r10
-> 	setg %cl
-> 	movzbq %cl,%rcx
-54,58c53,57
+54,56c53,55
 < 	movq $4,%r10
 < 	movq $3,%r11
 < 	cmpq %r10,%r11
-< 	setl %cl
-< 	movzbq %cl,%rdx
 ---
 > 	movq $3,%r10
 > 	movq $4,%r11
 > 	cmpq %r11,%r10
-> 	setl %dl
-> 	movzbq %dl,%rdx

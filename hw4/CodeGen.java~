@@ -3,7 +3,6 @@
 // 
 // X86-64 code generator for IR1 (A starter version, For CS322 HW4)
 //
-//Bin Gao
 
 import java.io.*;
 import java.util.*;

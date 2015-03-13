@@ -43,8 +43,8 @@ selectionSort_L0:
 			  #  t2 = i >= 0
 	movq $0,%r10
 	cmpq %r10,%rax
-	setge %bl
-	movzbq %bl,%rcx
+	setge %cl
+	movzbq %cl,%rcx
 			  #  if t2 == false goto L1
 	movq $0,%r11
 	cmpq %r11,%rcx
@@ -57,8 +57,8 @@ selectionSort_L0:
 selectionSort_L2:
 			  #  t3 = j <= i
 	cmpq %rax,%rcx
-	setle %cl
-	movzbq %cl,%rsi
+	setle %sil
+	movzbq %sil,%rsi
 			  #  if t3 == false goto L3
 	movq $0,%r11
 	cmpq %r11,%rsi
@@ -85,8 +85,8 @@ selectionSort_L2:
 	movslq (%r8),%r8
 			  #  t10 = t6 > t9
 	cmpq %r8,%rsi
-	setg %dl
-	movzbq %dl,%rsi
+	setg %sil
+	movzbq %sil,%rsi
 			  #  if t10 == false goto L4
 	movq $0,%r11
 	cmpq %r11,%rsi
@@ -107,8 +107,8 @@ selectionSort_L4:
 selectionSort_L3:
 			  #  t12 = k != i
 	cmpq %rax,%rdx
-	setne %sil
-	movzbq %sil,%rcx
+	setne %cl
+	movzbq %cl,%rcx
 			  #  if t12 == false goto L5
 	movq $0,%r11
 	cmpq %r11,%rcx
@@ -200,8 +200,8 @@ main_L6:
 			  #  t25 = cnt < 10
 	movq $10,%r10
 	cmpq %r10,%rbp
-	setl %dil
-	movzbq %dil,%rax
+	setl %al
+	movzbq %al,%rax
 			  #  if t25 == false goto L7
 	movq $0,%r11
 	cmpq %r11,%rax
@@ -244,8 +244,8 @@ main_L8:
 			  #  t30 = cnt < 10
 	movq $10,%r10
 	cmpq %r10,%rbp
-	setl %bpl
-	movzbq %bpl,%rax
+	setl %al
+	movzbq %al,%rax
 			  #  if t30 == false goto L9
 	movq $0,%r11
 	cmpq %r11,%rax
